@@ -9,7 +9,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from langchain_google_genai import ChatGoogleGenerativeAI
 from faster_whisper import WhisperModel
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 # ============================================================
 # 0) CONFIGURATION & INIT
@@ -142,16 +142,21 @@ def answer_from_context(llm, query, context_chunks):
 def build_smart_intent_prompt():
     """
     Combined prompt: Handles Correction, Classification, Ambiguity, AND Gibberish.
-    IMPORTANT: Using double curly braces {{ }} for JSON syntax to avoid Python formatting errors.
+    UPDATED: Strictly distinguishes between ACTION (doing a task) and INQUIRY (asking about it).
     """
     template = """
     You are an intelligent intent classifier for a company bot.
+    
+    CRITICAL DISTINCTION:
+    - If the user asks a QUESTION about a topic (e.g., "What is KYC?", "Do you do OCR?", "How does recon work?"), the intent must be "convo".
+    - Only select specific intents ("recon", "ocr", "kyc") if the user explicitly wants to PERFORM that action NOW.
+
     The valid intents are:
-    1. recon (Reconciliation of files, comparing spreadsheets)
-    2. ocr (Optical Character Recognition, extracting text from images/pdfs)
-    3. kyc (Know Your Customer, identity verification, passport, aadhaar)
-    4. convo (General conversation, questions about the company, greetings)
-    5. unknown (Gibberish, random characters, or completely nonsensical text)
+    1. recon: User wants to START reconciling files (e.g., "start recon", "compare these files").
+    2. ocr: User wants to UPLOAD or EXTRACT text (e.g., "ocr this image", "extract text").
+    3. kyc: User wants to VERIFY identity (e.g., "verify me", "do kyc", "upload passport").
+    4. convo: General chat, greetings, OR questions ABOUT the company/services (e.g., "Do you offer KYC?", "What is reconciliation?").
+    5. unknown: Gibberish or random characters.
 
     YOUR TASK:
     Analyze the user text and return a JSON object.
@@ -184,7 +189,7 @@ def build_smart_intent_prompt():
     }}
 
     SCENARIO D: GIBBERISH / NONSENSE
-    If the input makes NO sense, is random typing, or is impossible to understand, return:
+    If the input makes NO sense, return:
     {{
         "type": "direct",
         "intent": "unknown",
@@ -195,27 +200,26 @@ def build_smart_intent_prompt():
     User: "I want to perform reconn"
     JSON: {{"type": "correction", "suggested_intent": "recon", "original_term": "reconn"}}
 
-    User: "Extract text from this invoice"
+    User: "Extract text from this invoice" (Action)
     JSON: {{"type": "direct", "intent": "ocr", "confidence": 0.98}}
 
-    User: "Process this file"
-    JSON: {{"type": "ambiguous", "options": [{{"intent": "ocr", "score": 0.5}}, {{"intent": "recon", "score": 0.4}}, {{"intent": "convo", "score": 0.1}}]}}
+    User: "Does your company do OCR?" (Inquiry)
+    JSON: {{"type": "direct", "intent": "convo", "confidence": 0.99}}
+
+    User: "What is the process for KYC?" (Inquiry)
+    JSON: {{"type": "direct", "intent": "convo", "confidence": 0.99}}
+
+    User: "Start identity verification" (Action)
+    JSON: {{"type": "direct", "intent": "kyc", "confidence": 0.98}}
 
     User: "asdf jkl lojz"
     JSON: {{"type": "direct", "intent": "unknown", "confidence": 1.0}}
-
-    User: "bla bla bla"
-    JSON: {{"type": "direct", "intent": "unknown", "confidence": 1.0}}
-
-    User: "Hello there"
-    JSON: {{"type": "direct", "intent": "convo", "confidence": 1.0}}
 
     Now, analyze this text:
     User: "{query}"
     JSON Response:
     """
     return PromptTemplate(template=template, input_variables=["query"])
-
 def analyze_intent_smart(llm, prompt_template, query):
     prompt = prompt_template.format(query=query)
     raw = llm.invoke(prompt).content.strip()
@@ -322,6 +326,7 @@ def main():
         st.session_state.top3_options = None
         st.session_state.awaiting_correction_confirmation = False
         st.session_state.awaiting_top3_choice = False
+        st.session_state.recon_stage = None
 
         # --- 2. Analyze Intent ---
         result = analyze_intent_smart(llm, intent_prompt, query)

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import joblib
+import os
 
 from sentence_transformers import SentenceTransformer
 from sklearn.model_selection import train_test_split
@@ -23,6 +24,10 @@ def clean_text(text: str) -> str:
 
 
 def main():
+    if not os.path.exists(DATA_PATH):
+        print(f"❌ Error: {DATA_PATH} not found. Run generate_intent_dataset.py first.")
+        return
+
     print("📌 Loading dataset...")
     df = pd.read_csv(DATA_PATH)
 

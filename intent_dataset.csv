@@ -1,960 +1,1251 @@
 text,label
-check two excel files,recon
-do you provide ai services,convo
-verify aadhaar,kyc
-what services does technodysis provide,convo
-tell me about technodysis,convo
-validate pan card for account opening,kyc
-hey,convo
-what industries do you work with,convo
-convert this receipt and copy the text,ocr
-highlight differences in transaction records and show missing entries,recon
-match invoice report and payment report for me,recon
-recognize text from this form and give me the content,ocr
-check transaction records and show duplicates,recon
-convert this scanned pdf,ocr
+extract text,ocr
 what projects have you done,convo
-check two excel files and show missing entries,recon
-scan this scanned pdf and show me the extracted words,ocr
-highlight differences in bank statement and ledger and show missing entries,recon
-check transaction records in detail,recon
-check identity for customer for onboarding,kyc
-detect text in this photo and copy the text,ocr
-confirm identity for government id and extract name and dob,kyc
-perform ocr on this photo and show me the extracted words,ocr
-highlight differences in two csv files and show duplicates,recon
-compare payment records today,recon
-validate driving license for verification,kyc
-check identity for voter id and validate details,kyc
-read text from this invoice and return plain text,ocr
-do kyc for pan card and validate details,kyc
-cross check invoice report and payment report and show missing entries,recon
-what industries do you work with,convo
-who is the founder of technodysis,convo
-do kyc for government id and extract name and dob,kyc
-verify two excel files and show duplicates,recon
-cross-check invoice report and payment report quickly,recon
-validate two statements in detail,recon
-perform ocr on this form and show me the extracted words,ocr
-verify two files for me,recon
-validate pan card,kyc
-perform kyc for aadhaar,kyc
-validate bank statement and ledger and show duplicates,recon
-detect text in this pdf and show me the extracted words,ocr
-convert this form and give me the content,ocr
-detect text in this bill and give me the content,ocr
-validate transaction records and show duplicates,recon
-recognize text from this image and give me the content,ocr
-perform kyc for pan card for onboarding,kyc
-extract text from this pdf and copy the text,ocr
-cross check two spreadsheets for me,recon
-check bank statement and ledger quickly,recon
-check identity for aadhar for onboarding,kyc
-highlight differences in two spreadsheets and show missing entries,recon
-detect text in this scanned document and return plain text,ocr
-do you provide ai services,convo
-convert this pdf and copy the text,ocr
-do kyc for voter id,kyc
-hi,convo
-confirm identity for customer,kyc
-tell me about technodysis,convo
-convert this receipt and return plain text,ocr
-recognize text from this scanned document and show me the extracted words,ocr
-recognize text from this bill and give me the content,ocr
-extract text from this pdf and return plain text,ocr
-do kyc for passport for verification,kyc
-compare bank statement and ledger today,recon
-highlight differences in two csv files,recon
-who is the founder of technodysis,convo
-detect text in this document and copy the text,ocr
-perform kyc for user,kyc
-perform ocr on this bill and return plain text,ocr
-scan this image,ocr
-read text from this scanned pdf and show me the extracted words,ocr
-cross check two files and tell me what changed,recon
-recognize text from this scanned document and return plain text,ocr
-perform ocr on this pdf and return plain text,ocr
-good morning,convo
-validate customer and extract name and dob,kyc
-convert this scanned document and show me the extracted words,ocr
-scan this photo and show me the extracted words,ocr
-verify customer,kyc
-verify user for onboarding,kyc
-verify user and validate details,kyc
-hi,convo
-what solutions do you offer,convo
-do you provide automation services,convo
-do you provide ai services,convo
-do kyc for driving license and validate details,kyc
-what services does technodysis provide,convo
-compare bank statement and ledger quickly,recon
-validate pan card for onboarding,kyc
-what services does technodysis provide,convo
-check identity for aadhar for account opening,kyc
-perform kyc for government id and extract name and dob,kyc
-recognize text from this receipt,ocr
-extract text from this document and show me the extracted words,ocr
-what industries do you work with,convo
-validate invoice report and payment report,recon
-validate aadhaar for onboarding,kyc
-check two files in detail,recon
-what industries do you work with,convo
-scan this form and give me the content,ocr
-check identity for user for verification,kyc
-match two csv files quickly,recon
-good morning,convo
-convert this invoice and show me the extracted words,ocr
-hello,convo
-match two reports for me,recon
-extract text from this document and copy the text,ocr
-perform ocr on this image,ocr
-recognize text from this scanned document and give me the content,ocr
-perform ocr on this photo and copy the text,ocr
-validate customer and extract name and dob,kyc
-compare two spreadsheets today,recon
-scan this scanned pdf and copy the text,ocr
-what does your company do,convo
-verify aadhaar,kyc
-do kyc for user for account opening,kyc
-how can i contact technodysis,convo
-scan this invoice,ocr
-read text from this form and show me the extracted words,ocr
-compare two csv files quickly,recon
-convert this form and return plain text,ocr
-tell me about technodysis,convo
-do you provide automation services,convo
-highlight differences in two files and show mismatches,recon
-perform kyc for passport and extract name and dob,kyc
-perform ocr on this bill and return plain text,ocr
-compare transaction records quickly,recon
-read text from this scanned pdf and return plain text,ocr
-do kyc for customer and extract name and dob,kyc
-confirm identity for driving license for account opening,kyc
-convert this pdf and return plain text,ocr
-verify pan card for account opening,kyc
-read text from this scanned pdf,ocr
-match two reports for me,recon
-what services does technodysis provide,convo
-extract text from this scanned pdf and give me the content,ocr
-recognize text from this document and return plain text,ocr
-who is the founder of technodysis,convo
-highlight differences in two excel files quickly,recon
-confirm identity for aadhaar for account opening,kyc
-convert this invoice and show me the extracted words,ocr
-do you provide automation services,convo
-verify aadhar,kyc
-confirm identity for pan card for account opening,kyc
-perform kyc for customer and extract name and dob,kyc
-compare two reports and show mismatches,recon
-convert this invoice,ocr
-check identity for pan card for onboarding,kyc
-scan this bill and copy the text,ocr
-perform kyc for passport for onboarding,kyc
-check two csv files in detail,recon
-do kyc for pan card for verification,kyc
-cross check transaction records and show duplicates,recon
-validate aadhaar for account opening,kyc
-confirm identity for driving license and extract name and dob,kyc
-convert this receipt and copy the text,ocr
-cross check two spreadsheets and show duplicates,recon
-cross check two spreadsheets quickly,recon
-tell me about technodysis,convo
-confirm identity for customer for verification,kyc
-what services does technodysis provide,convo
-recon,recon
-perform kyc for aadhaar and validate details,kyc
-verify voter id for account opening,kyc
-recognize text from this scanned pdf,ocr
-compare two files and show mismatches,recon
-reconcile two spreadsheets and show missing entries,recon
-who is the founder of technodysis,convo
-perform ocr on this pdf,ocr
-ocr,ocr
-do you provide ai services,convo
-check identity for driving license for verification,kyc
-check identity for driving license for onboarding,kyc
-detect text in this photo and copy the text,ocr
-i want to perform recon,recon
-hello,convo
-read text from this receipt and copy the text,ocr
-check identity for voter id for onboarding,kyc
-find mismatch in two files and show mismatches,recon
-confirm identity for voter id and extract name and dob,kyc
-what industries do you work with,convo
-check identity for passport and validate details,kyc
-good evening,convo
-perform kyc for pan card for onboarding,kyc
-tell me about technodysis,convo
-what is technodysis,convo
-where is technodysis located,convo
-do kyc for aadhar,kyc
-find mismatch in two reports and show missing entries,recon
-check two excel files in detail,recon
-validate aadhar,kyc
-perform ocr on this form and copy the text,ocr
-explain your company,convo
-scan this receipt,ocr
-check identity for user and extract name and dob,kyc
-extract text from this document,ocr
-find mismatch in two reports for me,recon
-match two reports and show duplicates,recon
-do kyc for voter id for verification,kyc
-do you provide automation services,convo
-check invoice report and payment report quickly,recon
-confirm identity for aadhar and extract name and dob,kyc
-perform kyc for driving license and extract name and dob,kyc
-what solutions do you offer,convo
-recognize text from this bill,ocr
-compare transaction records for me,recon
-check two statements for me,recon
-good evening,convo
+perform ocr on this invoice and give me the content,ocr
+do kyc for passport,kyc
 recognize text from this document and show me the extracted words,ocr
-check identity for customer and extract name and dob,kyc
-cross check transaction records,recon
-find mismatch in two excel files today,recon
-extract text from this form and show me the extracted words,ocr
-how can i contact technodysis,convo
-verify government id for account opening,kyc
-do kyc for voter id and validate details,kyc
-highlight differences in payment records and tell me what changed,recon
-extract text from this bill and return plain text,ocr
-recognize text from this scanned pdf and give me the content,ocr
-read text from this scanned pdf,ocr
-verify voter id for onboarding,kyc
-explain your company,convo
-perform ocr on this pdf and give me the content,ocr
-validate government id and extract name and dob,kyc
-explain your company,convo
-check bank statement and ledger in detail,recon
-validate two files and show missing entries,recon
-cross-check two excel files quickly,recon
-perform kyc for aadhar for account opening,kyc
-what industries do you work with,convo
-extract text from this pdf and copy the text,ocr
-hi,convo
-validate government id and validate details,kyc
-detect text in this photo and copy the text,ocr
-match invoice report and payment report and tell me what changed,recon
-convert this bill and give me the content,ocr
-validate voter id for account opening,kyc
-compare two csv files and show mismatches,recon
-check transaction records today,recon
-confirm identity for customer for verification,kyc
-recognize text from this photo and return plain text,ocr
-do kyc for driving license,kyc
-scan this invoice,ocr
-highlight differences in transaction records,recon
-confirm identity for user for account opening,kyc
+recognize text from this receipt and return plain text,ocr
+know your custard,kyc
 cross check two excel files and show missing entries,recon
-explain your company,convo
-extract text from this image and return plain text,ocr
-validate aadhaar for account opening,kyc
-extract text from this receipt,ocr
+cross-check bank statement and ledger today,recon
+cross check two excel files today,recon
 hey,convo
-cross-check two csv files and show missing entries,recon
-extract text from this photo and copy the text,ocr
-check two files and tell me what changed,recon
-cross-check two statements today,recon
-cross-check two reports in detail,recon
-check identity for customer for verification,kyc
-what industries do you work with,convo
-detect text in this pdf and show me the extracted words,ocr
-what projects have you done,convo
-verify two csv files for me,recon
-tell me about technodysis,convo
-verify aadhaar and validate details,kyc
-what industries do you work with,convo
-perform ocr on this photo and give me the content,ocr
-recognize text from this scanned pdf and show me the extracted words,ocr
-recognize text from this receipt and copy the text,ocr
-perform ocr on this invoice and show me the extracted words,ocr
-detect text in this pdf,ocr
-recognize text from this invoice and return plain text,ocr
-validate two csv files and show duplicates,recon
-cross-check two reports quickly,recon
-do kyc for pan card for onboarding,kyc
-extract text from this pdf and give me the content,ocr
-check identity for government id and extract name and dob,kyc
-do kyc for user and extract name and dob,kyc
-confirm identity for user,kyc
-detect text in this receipt,ocr
-do kyc for aadhaar and validate details,kyc
-hey,convo
-extract text from this receipt and return plain text,ocr
+verify voter id for onboarding,kyc
+detect text in this photo and copy the text,ocr
+read text from this document and return plain text,ocr
+what does your company do,convo
 who is the founder of technodysis,convo
-verify pan card for account opening,kyc
-validate user and validate details,kyc
-verify voter id and extract name and dob,kyc
-read text from this form and give me the content,ocr
-cross-check invoice report and payment report quickly,recon
+what services does technodysis provide,convo
+validate aadhaar and validate details,kyc
+passport check,kyc
+tell me about technodysis,convo
+match invoice report and payment report for me,recon
+do kyc for voter id for account opening,kyc
+who is the founder of technodysis,convo
+perform kyc for aadhaar and extract name and dob,kyc
+recon,recon
+get text,ocr
+verify two statements and show duplicates,recon
+text extract,ocr
+do you provide ai services,convo
+what solutions do you offer,convo
+verify customer for account opening,kyc
+confirm identity for aadhaar and extract name and dob,kyc
+scan to text,ocr
+reconcile transaction records quickly,recon
+perform kyc for passport for onboarding,kyc
+who is the founder of technodysis,convo
+detect text in this photo and copy the text,ocr
+check identity for driving license,kyc
+highlight differences in transaction records and show missing entries,recon
+do kyc for passport for account opening,kyc
+detect text in this invoice and copy the text,ocr
+verify id,kyc
+what is technodysis,convo
+recognize text from this bill and give me the content,ocr
+extract text from this scanned pdf,ocr
+convert this document and give me the content,ocr
+do ocr,ocr
+check identity for pan card for onboarding,kyc
+what projects have you done,convo
+what industries do you work with,convo
+do kyc for pan card for verification,kyc
+confirm identity for voter id for onboarding,kyc
+what solutions do you offer,convo
+find mismatch in two files and show mismatches,recon
+perform ocr on this document and copy the text,ocr
+do recon,recon
+recognize text from this scanned pdf and show me the extracted words,ocr
+recognize text from this receipt,ocr
+check id,kyc
+perform ocr on this form and show me the extracted words,ocr
+validate user,kyc
+cross check two spreadsheets and show duplicates,recon
+highlight differences in two csv files,recon
+read text from this bill and give me the content,ocr
+read text from this scanned document and show me the extracted words,ocr
+how can i contact technodysis,convo
+confirm identity for passport for onboarding,kyc
+do recon,recon
+tell me about technodysis,convo
+check two excel files and show missing entries,recon
+recognize text from this form and show me the extracted words,ocr
+convert this bill and return plain text,ocr
+what industries do you work with,convo
+validate voter id for verification,kyc
+highlight differences in two files and show mismatches,recon
+what does your company do,convo
+do recon,recon
+verify id,kyc
+perform kyc for aadhar for account opening,kyc
+scan this photo and give me the content,ocr
+do kyc for driving license and validate details,kyc
+compare bank statement and ledger quickly,recon
+check two files in detail,recon
+perform kyc for customer and extract name and dob,kyc
+find diffs,recon
+what does your company do,convo
+check two excel files in detail,recon
+perform kyc for user for verification,kyc
+what services does technodysis provide,convo
+read text from this scanned pdf and show me the extracted words,ocr
+validate two excel files,recon
+validate transaction records and show duplicates,recon
+detect text in this pdf and show me the extracted words,ocr
+extract text from this invoice,ocr
+extract text from this scanned pdf and copy the text,ocr
+check two statements for me,recon
+detect text in this pdf and give me the content,ocr
+do recom,recon
+recognize text from this scanned pdf and give me the content,ocr
+do recon,recon
+check identity for passport and validate details,kyc
+explain your company,convo
+reconcile,recon
+do ocr,ocr
+check identity for voter id,kyc
+verify two csv files in detail,recon
+detect text in this invoice,ocr
+scan this invoice and copy the text,ocr
+convert to text,ocr
+hi,convo
 good evening,convo
+confirm identity for customer for verification,kyc
+cross-check two reports quickly,recon
+aadhaar check,kyc
+verify two excel files and show duplicates,recon
+how can i contact technodysis,convo
+confirm identity for passport,kyc
+verify two reports quickly,recon
+cross check two spreadsheets for me,recon
+cross check two reports and show mismatches,recon
+compare payment records today,recon
+do obr,ocr
+recognize text from this pdf and return plain text,ocr
+scan this scanned pdf and give me the content,ocr
+check transaction records in detail,recon
+cross-check bank statement and ledger and show mismatches,recon
+what services does technodysis provide,convo
+check id,kyc
+check id,kyc
+do you provide automation services,convo
+compare transaction records and show mismatches,recon
+check identity for aadhaar and validate details,kyc
 verify driving license and validate details,kyc
+verify user for onboarding,kyc
+perform kyc for pan card and validate details,kyc
+do obr,ocr
+passport check,kyc
+ocr scan,ocr
+perform ocr on this form and copy the text,ocr
+verify id,kyc
+convert this pdf and return plain text,ocr
+check two csv files in detail,recon
+find mismatch in two excel files today,recon
+recognize text from this image and return plain text,ocr
+perform odr,ocr
+cross-check transaction records and show missing entries,recon
+find mismatch in two reports for me,recon
+find diffs,recon
+recon,recon
+perform ocr on this pdf and give me the content,ocr
+good evening,convo
+convert this document and copy the text,ocr
+detect text in this document and return plain text,ocr
+confirm identity for passport for verification,kyc
+recom,recon
+ocr this,ocr
+scan this invoice and copy the text,ocr
+perform kyc for aadhaar and validate details,kyc
+extract text,ocr
+check identity for aadhar for account opening,kyc
+read text from this document,ocr
+extract text from this photo and copy the text,ocr
+extract text from this document and show me the extracted words,ocr
+perform ocr on this document and copy the text,ocr
+hi,convo
+perform kyc for user for account opening,kyc
+extract text from this document and return plain text,ocr
+compare bank statement and ledger today,recon
+hi,convo
+reconcile,recon
+highlight differences in transaction records,recon
+recognize text from this scanned pdf,ocr
+excel compare,recon
+highlight differences in two csv files and show duplicates,recon
+recom,recon
+check identity for pan card,kyc
+recognize text from this pdf and give me the content,ocr
+tell me about technodysis,convo
+where is technodysis located,convo
+reconcile,recon
+extract text from this pdf and copy the text,ocr
+recom,recon
+match two csv files quickly,recon
+aadhaar check,kyc
+cross-check two excel files quickly,recon
+cross check two statements and show missing entries,recon
+passport check,kyc
+know your custard,kyc
+scan this receipt and give me the content,ocr
+extract text from this photo and copy the text,ocr
+excel compare,recon
+excel compare,recon
+validate aadhaar for account opening,kyc
+good evening,convo
+do kyc for aadhar,kyc
+scan this scanned pdf and copy the text,ocr
+how can i contact technodysis,convo
+extract text from this invoice,ocr
+recognize text from this document and return plain text,ocr
+highlight differences in two excel files quickly,recon
+do kyc for pan card for onboarding,kyc
+validate pan card for account opening,kyc
+cross check two files quickly,recon
+extract text from this document and copy the text,ocr
+kyc,kyc
+passport check,kyc
+convert this form and return plain text,ocr
+ocr this,ocr
+perform kyc for passport and extract name and dob,kyc
+cross check transaction records and show duplicates,recon
+cross-check two excel files in detail,recon
+read text from this document and show me the extracted words,ocr
+recognize text from this scanned document and copy the text,ocr
+reconcile,recon
+extract text,ocr
+tell me about technodysis,convo
+validate voter id and extract name and dob,kyc
+csv match,recon
+compare two files and show mismatches,recon
+confirm identity for voter id for account opening,kyc
+perform kyc for passport for onboarding,kyc
+verify aadhaar,kyc
+extract text from this photo and give me the content,ocr
+odr,ocr
+highlight differences in two spreadsheets and show missing entries,recon
+compare bank statement and ledger and show missing entries,recon
+recom,recon
+verify two reports in detail,recon
+reconcile two files quickly,recon
+hi,convo
+convert this receipt and copy the text,ocr
+reconcile bank statement and ledger and show duplicates,recon
+kyc,kyc
+validate payment records and show mismatches,recon
+check identity for aadhaar for verification,kyc
+kyc,kyc
+what solutions do you offer,convo
+perform recom,recon
+check two excel files,recon
+cross-check two reports in detail,recon
+verify customer,kyc
+extract text from this photo,ocr
+do kyc for driving license and validate details,kyc
+match files,recon
+detect text in this document and copy the text,ocr
+read text from this bill and give me the content,ocr
+convert to text,ocr
+verify customer,kyc
+detect text in this scanned pdf and show me the extracted words,ocr
+extract text from this receipt,ocr
+who is the founder of technodysis,convo
+confirm identity for passport,kyc
+convert this photo and give me the content,ocr
+ocr,ocr
+do kyc for pan card and validate details,kyc
+aadhaar check,kyc
+do kyc,kyc
+hey,convo
+what does your company do,convo
+read text from this document and return plain text,ocr
+check identity for voter id and extract name and dob,kyc
+check two csv files in detail,recon
+perform kyc for aadhaar for verification,kyc
+do kyc for driving license and extract name and dob,kyc
+extract text from this form and show me the extracted words,ocr
+read text from this bill and show me the extracted words,ocr
+verify user for verification,kyc
+cross check two files and tell me what changed,recon
+text extract,ocr
+reconcile,recon
+good morning,convo
+hello,convo
+do odr,ocr
+read this,ocr
+good morning,convo
+perform recom,recon
+reconcile,recon
+check transaction records and show duplicates,recon
+excel compare,recon
+validate customer and extract name and dob,kyc
+verify pan card for account opening,kyc
+validate user,kyc
+do odr,ocr
+perform ocr on this document and show me the extracted words,ocr
+validate user and validate details,kyc
+validate government id and validate details,kyc
+csv match,recon
+check identity for aadhar for account opening,kyc
+recognize text from this image and give me the content,ocr
+scan this photo and copy the text,ocr
+validate two files today,recon
+validate two files today,recon
+ocr my file,ocr
+do kyc,kyc
+validate user,kyc
+check identity for driving license,kyc
+match files,recon
+do kyc for government id for account opening,kyc
+detect text in this document and give me the content,ocr
+tell me about technodysis,convo
+check identity for customer for account opening,kyc
+find mismatch in bank statement and ledger and tell me what changed,recon
+recom,recon
+verify customer,kyc
+reconcile two spreadsheets and show missing entries,recon
+perform ocr on this document and show me the extracted words,ocr
+recognize text from this invoice and return plain text,ocr
+check identity for driving license for verification,kyc
+verify two files for me,recon
+confirm identity for customer for verification,kyc
+verify government id for account opening,kyc
+match transaction records in detail,recon
+check identity for pan card and extract name and dob,kyc
+excel compare,recon
+reconcile,recon
+obr,ocr
+recognize text from this image and show me the extracted words,ocr
+do odr,ocr
+confirm identity for driving license for account opening,kyc
+what does your company do,convo
+do odr,ocr
+perform kyc for customer and extract name and dob,kyc
+know your custard,kyc
+scan this scanned pdf and copy the text,ocr
+do you provide ai services,convo
+explain your company,convo
+validate pan card for onboarding,kyc
+tell me about technodysis,convo
+do recom,recon
+verify aadhar for account opening,kyc
+confirm identity for aadhar and extract name and dob,kyc
+confirm identity for pan card,kyc
+recognize text from this scanned document and copy the text,ocr
+validate bank statement and ledger and show duplicates,recon
+cross check invoice report and payment report and show missing entries,recon
+verify bank statement and ledger and tell me what changed,recon
+validate user,kyc
+validate two statements in detail,recon
+match files,recon
+kyc,kyc
+what services does technodysis provide,convo
+who is the founder of technodysis,convo
+good evening,convo
+highlight differences in bank statement and ledger,recon
+compare transaction records today,recon
+extract text,ocr
+do you provide ai services,convo
+explain your company,convo
+do kyc,kyc
+what projects have you done,convo
+confirm identity for voter id and validate details,kyc
+recom,recon
+passport check,kyc
+compare files,recon
+what solutions do you offer,convo
+do ocr,ocr
+cross check transaction records,recon
+validate two excel files in detail,recon
+check identity for customer and validate details,kyc
+detect text in this bill and give me the content,ocr
+ocr this,ocr
+verify customer for onboarding,kyc
+verify customer,kyc
+what solutions do you offer,convo
+do kyc for government id and extract name and dob,kyc
+verify two csv files for me,recon
+perform kyc for passport and extract name and dob,kyc
+check identity for voter id and validate details,kyc
+text extract,ocr
+what services does technodysis provide,convo
+compare transaction records quickly,recon
+cross-check invoice report and payment report quickly,recon
+extract text from this invoice and show me the extracted words,ocr
+cross-check two statements today,recon
+validate two spreadsheets and show mismatches,recon
+perform kyc for user for account opening,kyc
+perform kyc for driving license and validate details,kyc
+recom,recon
+perform ocr on this invoice and show me the extracted words,ocr
+do kyc,kyc
+who is the founder of technodysis,convo
+confirm identity for driving license for onboarding,kyc
+get text,ocr
+what services does technodysis provide,convo
+read text from this scanned pdf and give me the content,ocr
+convert this scanned pdf,ocr
+do kyc for aadhar and extract name and dob,kyc
+tell me about technodysis,convo
+recognize text from this bill and return plain text,ocr
+perform odr,ocr
+who is the founder of technodysis,convo
+excel compare,recon
+scan this document and give me the content,ocr
+read text from this image,ocr
+cross check invoice report and payment report and show duplicates,recon
+scan this form and give me the content,ocr
+compare transaction records for me,recon
+find mismatch in two csv files and tell me what changed,recon
+scan this photo and copy the text,ocr
+recom,recon
+what does your company do,convo
+do you provide ai services,convo
+confirm identity for driving license,kyc
+ocr my file,ocr
+check identity for government id for verification,kyc
+highlight differences in bank statement and ledger and show missing entries,recon
+extract text from this receipt and return plain text,ocr
+reconcile two csv files,recon
+how can i contact technodysis,convo
+convert this invoice and show me the extracted words,ocr
+read text from this scanned pdf and return plain text,ocr
+validate passport and extract name and dob,kyc
+detect text in this pdf and return plain text,ocr
+read text from this invoice and return plain text,ocr
+confirm identity for pan card for account opening,kyc
+passport check,kyc
+extract text from this document and return plain text,ocr
+how can i contact technodysis,convo
+tell me about technodysis,convo
+recon,recon
+reconcile,recon
+check bank statement and ledger in detail,recon
+recon,recon
+do kyc,kyc
+highlight differences in two csv files today,recon
+do recom,recon
+verify two reports today,recon
+verify customer for account opening,kyc
+check transaction records today,recon
+recognize text from this document and return plain text,ocr
+match two reports for me,recon
+compare two spreadsheets today,recon
+ocr this,ocr
+verify passport for account opening,kyc
+ocr my file,ocr
+validate invoice report and payment report,recon
+detect text in this document and copy the text,ocr
+check identity for driving license and extract name and dob,kyc
+verify user for onboarding,kyc
+perform ocr on this document and show me the extracted words,ocr
+perform ocr on this photo and show me the extracted words,ocr
+explain your company,convo
+what is technodysis,convo
+confirm identity for customer for account opening,kyc
+convert this image and return plain text,ocr
+ocr this,ocr
+check id,kyc
+scan this photo and give me the content,ocr
+reconcile,recon
+scan this form and copy the text,ocr
+know your custard,kyc
+do recon,recon
+grab text,ocr
+do kyc for aadhaar for account opening,kyc
+scan this image and copy the text,ocr
+perform kyc for voter id for account opening,kyc
+hello,convo
+check identity for government id for onboarding,kyc
+recognize text from this receipt and copy the text,ocr
+compare two csv files quickly,recon
+recognize text from this invoice and show me the extracted words,ocr
+where is technodysis located,convo
+reconcile transaction records for me,recon
+perform kyc for aadhar for onboarding,kyc
+who is the founder of technodysis,convo
+extract text from this bill and give me the content,ocr
+kyc,kyc
+excel compare,recon
+do kyc for voter id and validate details,kyc
+perform ocr on this photo and show me the extracted words,ocr
+scan this receipt,ocr
+how can i contact technodysis,convo
+recognize text from this form and show me the extracted words,ocr
+confirm identity for driving license for onboarding,kyc
+check id,kyc
+validate aadhaar for account opening,kyc
+recognize text from this scanned pdf and return plain text,ocr
+do you provide ai services,convo
+match two excel files quickly,recon
+check identity for pan card for onboarding,kyc
+detect text in this receipt,ocr
+match two reports for me,recon
+read text from this scanned pdf,ocr
+detect text in this invoice and give me the content,ocr
+cross-check two csv files and show missing entries,recon
+do kyc for aadhaar,kyc
+what industries do you work with,convo
+what does your company do,convo
+check two files and tell me what changed,recon
+who is the founder of technodysis,convo
+kyc,kyc
+recon,recon
+extract text from this pdf and show me the extracted words,ocr
+verify government id and extract name and dob,kyc
+verify passport for onboarding,kyc
+perform recom,recon
+verify aadhar,kyc
+scan this pdf and return plain text,ocr
+perform ocr on this receipt,ocr
+validate two excel files quickly,recon
+compare two reports and show mismatches,recon
+explain your company,convo
+where is technodysis located,convo
+what services does technodysis provide,convo
+find mismatch in two files for me,recon
+convert this pdf,ocr
+validate passport and extract name and dob,kyc
+confirm identity for user for account opening,kyc
+compare two csv files and show mismatches,recon
+verify id,kyc
+perform kyc for pan card for account opening,kyc
+extract text from this scanned document and copy the text,ocr
+validate user,kyc
+check bank statement and ledger quickly,recon
+check two reports and tell me what changed,recon
+match files,recon
+do kyc for customer and extract name and dob,kyc
+scan this receipt and give me the content,ocr
+excel compare,recon
+highlight differences in payment records and tell me what changed,recon
+convert this scanned pdf,ocr
+verify id,kyc
+confirm identity for aadhar for verification,kyc
+do kyc for voter id for onboarding,kyc
+verify voter id and extract name and dob,kyc
+do ocr,ocr
+what solutions do you offer,convo
+compare files,recon
+who is the founder of technodysis,convo
+perform ocr on this photo and copy the text,ocr
+cross check two spreadsheets quickly,recon
+perform kyc for passport for onboarding,kyc
+confirm identity for aadhaar,kyc
+excel compare,recon
+perform kyc for pan card for verification,kyc
+passport check,kyc
+highlight differences in two reports for me,recon
+pan check,kyc
+validate two statements and show missing entries,recon
+cross check bank statement and ledger for me,recon
+good morning,convo
+find mismatch in two reports and show missing entries,recon
+do kyc for voter id for verification,kyc
+extract text from this form,ocr
+read text from this form and return plain text,ocr
+hey,convo
+do kyc for user for account opening,kyc
+check identity for user and extract name and dob,kyc
+match two reports and show duplicates,recon
+validate two files and show missing entries,recon
+perform ocr on this scanned pdf and give me the content,ocr
+check invoice report and payment report quickly,recon
+extract text from this pdf and return plain text,ocr
+tell me about technodysis,convo
+scan this pdf and copy the text,ocr
+grab text,ocr
+do kyc,kyc
+recognize text from this bill and copy the text,ocr
+hello,convo
+ocr my file,ocr
+do you provide automation services,convo
+find mismatch in two reports today,recon
+convert this photo and copy the text,ocr
+extract text,ocr
+highlight differences in transaction records quickly,recon
+do recon,recon
+check identity for voter id for onboarding,kyc
+check two files for me,recon
+check two excel files and show missing entries,recon
+cross-check two files and show missing entries,recon
+good evening,convo
+detect text in this invoice and show me the extracted words,ocr
+match invoice report and payment report and tell me what changed,recon
+check identity for driving license and validate details,kyc
+compare files,recon
+good morning,convo
+match bank statement and ledger and show mismatches,recon
+convert this receipt and return plain text,ocr
+good morning,convo
+extract text from this document and copy the text,ocr
+read this,ocr
+passport check,kyc
+extract text from this photo and return plain text,ocr
+read text from this bill and show me the extracted words,ocr
+do you provide ai services,convo
+validate payment records quickly,recon
+detect text in this image and give me the content,ocr
+who is the founder of technodysis,convo
+perform ocr on this photo and return plain text,ocr
+cross check two reports and tell me what changed,recon
+what is technodysis,convo
+do kyc for aadhaar and validate details,kyc
+do obr,ocr
+where is technodysis located,convo
+validate two csv files and show duplicates,recon
+verify user for onboarding,kyc
+confirm identity for aadhaar for onboarding,kyc
+detect text in this pdf and copy the text,ocr
+recon,recon
+perform kyc for pan card and extract name and dob,kyc
+perform kyc for driving license and validate details,kyc
+csv match,recon
+verify driving license for account opening,kyc
+kyc,kyc
+do kyc for voter id for onboarding,kyc
+ocr my file,ocr
+confirm identity for aadhar for account opening,kyc
+scan this invoice,ocr
+confirm identity for aadhaar and validate details,kyc
+perform kyc for user for onboarding,kyc
+check identity for driving license for onboarding,kyc
+what does your company do,convo
+convert this pdf and copy the text,ocr
+recognize text from this document and show me the extracted words,ocr
+check bank statement and ledger in detail,recon
+cross-check invoice report and payment report quickly,recon
+do you provide ai services,convo
 highlight differences in payment records for me,recon
 find mismatch in two spreadsheets,recon
 compare two statements and show mismatches,recon
-detect text in this scanned pdf and show me the extracted words,ocr
-scan this bill and show me the extracted words,ocr
-read text from this pdf and return plain text,ocr
-detect text in this image and give me the content,ocr
-do you provide automation services,convo
+perform kyc for aadhaar,kyc
+do kyc for driving license for verification,kyc
+validate customer for account opening,kyc
 cross check two csv files and show duplicates,recon
-validate pan card and extract name and dob,kyc
+confirm identity for customer for account opening,kyc
+extract text from this scanned pdf and copy the text,ocr
 do you provide automation services,convo
-confirm identity for government id for account opening,kyc
+scan this scanned pdf and show me the extracted words,ocr
+passport check,kyc
+perform ocr on this pdf,ocr
+verify customer and extract name and dob,kyc
+do recom,recon
+read text from this bill,ocr
 compare two files in detail,recon
-check identity for pan card and extract name and dob,kyc
-check identity for passport for account opening,kyc
-extract text from this invoice and show me the extracted words,ocr
-extract text from this pdf and show me the extracted words,ocr
-perform ocr on this document and show me the extracted words,ocr
-convert this receipt and give me the content,ocr
-check transaction records and tell me what changed,recon
-verify two csv files quickly,recon
-validate voter id and validate details,kyc
-what services does technodysis provide,convo
-how can i contact technodysis,convo
-reconcile payment records and show duplicates,recon
-hey,convo
-verify transaction records for me,recon
-perform ocr on this document and show me the extracted words,ocr
-do you provide automation services,convo
-cross check invoice report and payment report and show missing entries,recon
 convert this image and copy the text,ocr
+what projects have you done,convo
+detect text in this pdf and copy the text,ocr
+perform kyc for customer for account opening,kyc
+do kyc for customer for onboarding,kyc
+check identity for aadhar and extract name and dob,kyc
+check transaction records and tell me what changed,recon
+recognize text from this scanned document and show me the extracted words,ocr
+verify two csv files quickly,recon
+text extract,ocr
+scan this photo and return plain text,ocr
+reconcile payment records and show duplicates,recon
+what solutions do you offer,convo
+verify transaction records for me,recon
+perform kyc for aadhar for onboarding,kyc
+convert this receipt,ocr
+match files,recon
+cross check invoice report and payment report and show missing entries,recon
 cross-check two excel files for me,recon
-scan this scanned pdf and copy the text,ocr
-confirm identity for aadhar for verification,kyc
-validate payment records quickly,recon
-do kyc for pan card for account opening,kyc
-cross check two files quickly,recon
+recom,recon
+do kyc for passport for onboarding,kyc
+csv match,recon
+do you provide automation services,convo
+check identity for aadhar for onboarding,kyc
+perform ocr on this bill and return plain text,ocr
+validate aadhaar for account opening,kyc
+kyc,kyc
+perform ocr on this form and give me the content,ocr
+explain your company,convo
+match files,recon
+recognize text from this bill,ocr
 check payment records for me,recon
 verify bank statement and ledger in detail,recon
-verify aadhar and extract name and dob,kyc
+perform ocr on this photo and give me the content,ocr
 validate invoice report and payment report,recon
-check identity for aadhar for account opening,kyc
-check identity for government id for onboarding,kyc
+validate user,kyc
+perform kyc for user for verification,kyc
 match transaction records and show duplicates,recon
-hello,convo
-cross-check two excel files in detail,recon
+what solutions do you offer,convo
+get text,ocr
 highlight differences in two statements and show duplicates,recon
-find mismatch in two csv files and tell me what changed,recon
-perform kyc for pan card and validate details,kyc
-perform ocr on this photo and show me the extracted words,ocr
-compare two files and show missing entries,recon
-perform kyc for aadhaar and extract name and dob,kyc
-verify customer for verification,kyc
-check two files for me,recon
-cross-check two files and show missing entries,recon
-hi,convo
-find mismatch in two files and tell me what changed,recon
-compare transaction records and show mismatches,recon
+convert this scanned pdf and copy the text,ocr
+pan check,kyc
+what does your company do,convo
 detect text in this scanned document and show me the extracted words,ocr
-hi,convo
+compare two files and show missing entries,recon
+pan check,kyc
+convert this bill and give me the content,ocr
+ocr image,ocr
+find mismatch in two files and tell me what changed,recon
+highlight differences in two files in detail,recon
+cross check two csv files today,recon
 validate two files and show duplicates,recon
-hello,convo
-detect text in this scanned document and copy the text,ocr
+validate customer and extract name and dob,kyc
+tell me about technodysis,convo
+do you provide ai services,convo
 verify transaction records and show duplicates,recon
 reconcile two spreadsheets and tell me what changed,recon
-check identity for aadhar and validate details,kyc
 highlight differences in transaction records,recon
-verify customer and extract name and dob,kyc
-cross-check transaction records and show missing entries,recon
-detect text in this document and give me the content,ocr
-detect text in this scanned pdf,ocr
-check identity for user for verification,kyc
+validate aadhaar and validate details,kyc
+read text from this scanned pdf,ocr
+check identity for customer for verification,kyc
+what does your company do,convo
+what industries do you work with,convo
+convert this invoice and return plain text,ocr
+read text from this bill,ocr
 find mismatch in two csv files today,recon
-extract text from this invoice,ocr
-explain your company,convo
-verify customer and validate details,kyc
-scan this scanned document and copy the text,ocr
-verify two reports quickly,recon
-how can i contact technodysis,convo
-good morning,convo
-check identity for aadhaar and validate details,kyc
-extract text from this scanned document,ocr
-what projects have you done,convo
-validate voter id for verification,kyc
-what solutions do you offer,convo
-read text from this scanned pdf and show me the extracted words,ocr
-reconcile two csv files in detail,recon
-hello,convo
-validate aadhaar for verification,kyc
-recognize text from this document and show me the extracted words,ocr
-scan this pdf and copy the text,ocr
-validate two files today,recon
-compare two statements,recon
-good morning,convo
-recognize text from this scanned document and give me the content,ocr
-extract text from this document and return plain text,ocr
-scan this document and give me the content,ocr
-detect text in this pdf and give me the content,ocr
-what projects have you done,convo
-perform ocr on this pdf and return plain text,ocr
-validate two spreadsheets and show mismatches,recon
-match two excel files quickly,recon
-read text from this image and copy the text,ocr
-convert this photo and copy the text,ocr
 perform kyc for voter id,kyc
-check two excel files and show missing entries,recon
-confirm identity for customer for verification,kyc
-verify user and extract name and dob,kyc
-convert this scanned pdf and copy the text,ocr
-scan this bill and return plain text,ocr
-what projects have you done,convo
-do kyc for driving license for verification,kyc
-check invoice report and payment report in detail,recon
-check identity for driving license,kyc
-do kyc for pan card for verification,kyc
+check identity for government id for onboarding,kyc
+perform kyc for pan card,kyc
+hi,convo
+convert this receipt and return plain text,ocr
+confirm identity for passport for account opening,kyc
 tell me about technodysis,convo
-scan this scanned pdf and copy the text,ocr
-reconcile two files quickly,recon
-check two reports and tell me what changed,recon
-check identity for passport and validate details,kyc
-what projects have you done,convo
-perform ocr on this invoice and show me the extracted words,ocr
-verify two spreadsheets quickly,recon
-verify two csv files in detail,recon
-explain your company,convo
-perform kyc for customer,kyc
-perform ocr on this document and show me the extracted words,ocr
-find mismatch in two reports today,recon
-find mismatch in invoice report and payment report in detail,recon
-scan this pdf and give me the content,ocr
-extract text from this photo and give me the content,ocr
-reconcile transaction records for me,recon
-perform kyc for user and validate details,kyc
-reconcile two statements,recon
-scan this scanned pdf and give me the content,ocr
-good evening,convo
-what is technodysis,convo
-how can i contact technodysis,convo
-do kyc for government id and extract name and dob,kyc
-do you provide ai services,convo
-check identity for aadhar for account opening,kyc
-cross check bank statement and ledger for me,recon
-verify two spreadsheets for me,recon
-recognize text from this scanned document and copy the text,ocr
-extract text from this scanned document and copy the text,ocr
-cross-check bank statement and ledger today,recon
-cross-check two statements for me,recon
-recognize text from this bill and return plain text,ocr
-cross check two excel files,recon
-verify customer and extract name and dob,kyc
-do you provide ai services,convo
-validate pan card and validate details,kyc
-hello,convo
-validate two excel files in detail,recon
-perform ocr on this form and give me the content,ocr
-check two csv files in detail,recon
-scan this receipt and give me the content,ocr
-confirm identity for voter id for onboarding,kyc
-hey,convo
-verify passport for account opening,kyc
-cross check two reports and tell me what changed,recon
-scan this photo and give me the content,ocr
-confirm identity for aadhaar,kyc
-good morning,convo
-validate customer for account opening,kyc
-detect text in this scanned document and show me the extracted words,ocr
 read text from this receipt and copy the text,ocr
+detect text in this image and return plain text,ocr
+match files,recon
+confirm identity for aadhaar for verification,kyc
+cross check two statements in detail,recon
+perform ocr on this invoice and show me the extracted words,ocr
+convert this bill and give me the content,ocr
+confirm identity for aadhar for verification,kyc
+check invoice report and payment report in detail,recon
+reconcile two csv files in detail,recon
+what industries do you work with,convo
+do kyc for voter id,kyc
+validate user for onboarding,kyc
+scan this form and show me the extracted words,ocr
+compare two statements,recon
+match files,recon
+what industries do you work with,convo
+recon,recon
+verify aadhar and validate details,kyc
+text extract,ocr
+detect text in this receipt,ocr
+validate user,kyc
+do kyc for driving license and extract name and dob,kyc
+validate aadhaar for account opening,kyc
+do kyc for customer,kyc
+validate aadhar,kyc
+read text from this scanned pdf,ocr
+validate user,kyc
+get text,ocr
+validate user,kyc
+convert this scanned pdf and give me the content,ocr
+perform ocr on this receipt and show me the extracted words,ocr
+get text,ocr
+pan check,kyc
+validate government id and validate details,kyc
+recognize text from this scanned pdf and show me the extracted words,ocr
+read text from this pdf and return plain text,ocr
+convert this scanned pdf,ocr
+verify two spreadsheets quickly,recon
+how can i contact technodysis,convo
+check identity for aadhaar for account opening,kyc
+recognize text from this document,ocr
+verify voter id for account opening,kyc
+do obr,ocr
+find mismatch in invoice report and payment report in detail,recon
+scan this pdf and return plain text,ocr
+ocr this,ocr
+do obr,ocr
+reconcile two statements,recon
+perform kyc for voter id and extract name and dob,kyc
+what is technodysis,convo
+do kyc for user for verification,kyc
+extract text from this pdf and give me the content,ocr
+aadhaar check,kyc
+know your custard,kyc
+verify id,kyc
+verify two spreadsheets for me,recon
+recognize text from this photo and return plain text,ocr
+check identity for user for onboarding,kyc
+convert this photo,ocr
+cross-check two statements for me,recon
+cross check two excel files,recon
+recognize text from this document,ocr
+scan this form and copy the text,ocr
+do recom,recon
+do you provide automation services,convo
+perform ocr on this pdf,ocr
+ocr image,ocr
+detect text in this bill,ocr
 tell me about technodysis,convo
-recognize text from this bill and copy the text,ocr
-perform kyc for aadhar for onboarding,kyc
+read this,ocr
+extract text,ocr
+what is technodysis,convo
+what services does technodysis provide,convo
+match two spreadsheets in detail,recon
+do kyc,kyc
+perform recom,recon
+verify driving license and extract name and dob,kyc
+match files,recon
 compare bank statement and ledger for me,recon
-highlight differences in bank statement and ledger,recon
-confirm identity for voter id,kyc
-do my recon,recon
-extract text from this image and show me the extracted words,ocr
-do kyc for pan card,kyc
-confirm identity for customer for account opening,kyc
-verify aadhar for account opening,kyc
-scan this invoice and copy the text,ocr
-recognize text from this receipt and return plain text,ocr
+do kyc,kyc
+compare files,recon
+check identity for government id for onboarding,kyc
+grab text,ocr
+hello,convo
+what does your company do,convo
+passport check,kyc
 compare bank statement and ledger and show mismatches,recon
 check two spreadsheets in detail,recon
-read text from this bill and show me the extracted words,ocr
-perform ocr on this document and show me the extracted words,ocr
-kyc,kyc
-perform ocr on this receipt and show me the extracted words,ocr
-tell me about technodysis,convo
-match bank statement and ledger and show mismatches,recon
-highlight differences in two reports for me,recon
 verify two csv files in detail,recon
-extract text from this photo and copy the text,ocr
-reconcile bank statement and ledger and show duplicates,recon
-confirm identity for government id,kyc
-hey,convo
-what solutions do you offer,convo
-do kyc for aadhaar for account opening,kyc
-detect text in this invoice and copy the text,ocr
-recognize text from this document,ocr
-validate aadhar for onboarding,kyc
-how can i contact technodysis,convo
-do kyc for aadhar and extract name and dob,kyc
-validate two reports for me,recon
-what services does technodysis provide,convo
-detect text in this receipt,ocr
-cross check invoice report and payment report and show duplicates,recon
-match two spreadsheets for me,recon
-check identity for aadhaar for account opening,kyc
-do kyc for government id and extract name and dob,kyc
-what does your company do,convo
-hello,convo
-recognize text from this document,ocr
-compare bank statement and ledger and show missing entries,recon
+do kyc for driving license,kyc
+scan this photo,ocr
+confirm identity for customer for account opening,kyc
+verify two csv files in detail,recon
+scan this photo and copy the text,ocr
+validate driving license for verification,kyc
+pan check,kyc
 do you provide ai services,convo
-what does your company do,convo
-convert this scanned pdf,ocr
-do kyc for customer for onboarding,kyc
+do odr,ocr
+tell me about technodysis,convo
+match files,recon
+detect text in this document and give me the content,ocr
+check identity for aadhaar,kyc
+compare two reports for me,recon
+validate two reports for me,recon
+do kyc,kyc
+verify id,kyc
+match two spreadsheets for me,recon
+hi,convo
+find mismatch in two excel files and show duplicates,recon
+know your custard,kyc
+excel compare,recon
+do ocr,ocr
+cross-check invoice report and payment report in detail,recon
+detect text in this scanned document and copy the text,ocr
+perform kyc for driving license and extract name and dob,kyc
 validate two excel files in detail,recon
 cross check two csv files and tell me what changed,recon
-convert this bill and return plain text,ocr
-confirm identity for aadhaar for verification,kyc
-perform kyc for user for onboarding,kyc
-scan this pdf,ocr
-find mismatch in two excel files and show duplicates,recon
-extract text from this scanned pdf and show me the extracted words,ocr
-verify driving license for onboarding,kyc
-convert this photo,ocr
-highlight differences in bank statement and ledger and show duplicates,recon
-extract text from this form,ocr
-validate invoice report and payment report and tell me what changed,recon
-perform ocr on this document and show me the extracted words,ocr
-verify two excel files in detail,recon
-where is technodysis located,convo
-perform kyc for aadhar for onboarding,kyc
-what services does technodysis provide,convo
-do kyc for passport for account opening,kyc
-compare two statements and tell me what changed,recon
-cross-check two files,recon
-perform ocr on this invoice and show me the extracted words,ocr
-confirm identity for aadhar for verification,kyc
-cross check transaction records quickly,recon
-validate customer,kyc
-how can i contact technodysis,convo
-read text from this bill and give me the content,ocr
-scan this receipt and return plain text,ocr
-compare two reports and tell me what changed,recon
-convert this invoice,ocr
-match invoice report and payment report today,recon
-what industries do you work with,convo
-hello,convo
-hello,convo
-perform ocr on this form and return plain text,ocr
-scan this invoice and copy the text,ocr
-do you provide automation services,convo
-detect text in this invoice and show me the extracted words,ocr
-detect text in this document and copy the text,ocr
 what does your company do,convo
+do kyc for customer for onboarding,kyc
+scan this scanned pdf,ocr
+detect text in this pdf,ocr
+validate voter id and validate details,kyc
+highlight differences in bank statement and ledger and show duplicates,recon
+recom,recon
+validate invoice report and payment report and tell me what changed,recon
+detect text in this scanned pdf and show me the extracted words,ocr
+hey,convo
+convert this receipt and copy the text,ocr
+verify two excel files in detail,recon
+grab text,ocr
+what solutions do you offer,convo
+check identity for pan card and extract name and dob,kyc
+confirm identity for customer,kyc
+scan this invoice and copy the text,ocr
+do odr,ocr
+good morning,convo
+do you provide ai services,convo
+perform kyc for driving license and validate details,kyc
+compare two statements and tell me what changed,recon
+verify pan card,kyc
+perform kyc for aadhar and validate details,kyc
+cross-check two files,recon
+read text from this form and give me the content,ocr
+perform kyc for aadhaar and validate details,kyc
+tell me about technodysis,convo
+cross check transaction records quickly,recon
+do obr,ocr
+perform kyc for user,kyc
+verify pan card for verification,kyc
+validate transaction records,recon
+ocr my file,ocr
+verify id,kyc
+kyc,kyc
+verify two spreadsheets quickly,recon
+text extract,ocr
+scan this scanned pdf and copy the text,ocr
+excel compare,recon
+grab text,ocr
+confirm identity for pan card and extract name and dob,kyc
+verify aadhaar,kyc
+perform kyc for customer for onboarding,kyc
+compare two reports and tell me what changed,recon
+do recom,recon
+confirm identity for government id for account opening,kyc
+match invoice report and payment report today,recon
+reconcile invoice report and payment report for me,recon
+reconcile two spreadsheets quickly,recon
+odr,ocr
+convert this scanned document and show me the extracted words,ocr
+reconcile two csv files for me,recon
+csv match,recon
+do you provide automation services,convo
+scan this receipt,ocr
+kyc,kyc
+do kyc for government id for account opening,kyc
+validate customer,kyc
+check identity for aadhar for account opening,kyc
+extract text,ocr
+find diffs,recon
+perform recom,recon
+check identity for driving license and validate details,kyc
+recon,recon
 compare two reports and tell me what changed,recon
 cross-check two statements,recon
-hey,convo
+what solutions do you offer,convo
+extract text from this receipt,ocr
+obr,ocr
+extract text,ocr
 check two files for me,recon
-convert this photo and give me the content,ocr
-what projects have you done,convo
+perform kyc for passport for verification,kyc
+verify driving license for onboarding,kyc
+perform kyc for aadhaar for account opening,kyc
+validate voter id and validate details,kyc
+recognize text from this document,ocr
+what is technodysis,convo
 verify two statements and show missing entries,recon
-perform ocr on this photo and return plain text,ocr
-read text from this bill,ocr
-do kyc for passport for onboarding,kyc
-extract text from this document and copy the text,ocr
+convert this invoice and return plain text,ocr
+pan check,kyc
+ocr this,ocr
+recognize text from this image and return plain text,ocr
+what solutions do you offer,convo
+validate user,kyc
+match files,recon
 compare two csv files for me,recon
-what services does technodysis provide,convo
-do you provide ai services,convo
-good morning,convo
-extract text from this document,ocr
-confirm identity for passport for account opening,kyc
-verify voter id for onboarding,kyc
+do odr,ocr
+cross check two excel files and tell me what changed,recon
+validate government id and extract name and dob,kyc
+perform kyc for voter id for onboarding,kyc
+perform ocr on this invoice and show me the extracted words,ocr
+confirm identity for driving license for verification,kyc
+explain your company,convo
+scan this scanned document and copy the text,ocr
+check identity for passport and extract name and dob,kyc
+confirm identity for driving license and extract name and dob,kyc
+check identity for customer for onboarding,kyc
+extract text from this form and show me the extracted words,ocr
+do kyc for government id for verification,kyc
+tell me about technodysis,convo
+validate user,kyc
 validate payment records for me,recon
 find mismatch in invoice report and payment report today,recon
 cross check two spreadsheets quickly,recon
-what projects have you done,convo
-perform kyc for pan card and extract name and dob,kyc
-perform kyc for user for verification,kyc
-good morning,convo
+perform kyc for user,kyc
+what does your company do,convo
+hey,convo
+validate user,kyc
+verify aadhaar and validate details,kyc
+what solutions do you offer,convo
+scan this pdf and give me the content,ocr
 validate transaction records,recon
-scan this photo and copy the text,ocr
-what projects have you done,convo
-perform kyc for aadhaar for verification,kyc
-validate voter id and extract name and dob,kyc
+ocr my file,ocr
+ocr image,ocr
+confirm identity for voter id for verification,kyc
+do recom,recon
+get text,ocr
+do you provide ai services,convo
+perform odr,ocr
+who is the founder of technodysis,convo
+what solutions do you offer,convo
+extract text from this receipt and copy the text,ocr
+do you provide ai services,convo
+verify voter id for onboarding,kyc
+perform kyc for aadhar and validate details,kyc
 highlight differences in two csv files for me,recon
 validate payment records today,recon
-detect text in this pdf and copy the text,ocr
-detect text in this document and copy the text,ocr
-check identity for customer for account opening,kyc
-how can i contact technodysis,convo
+do recon,recon
+match files,recon
+pan check,kyc
+do kyc for customer and validate details,kyc
+what solutions do you offer,convo
 validate bank statement and ledger and tell me what changed,recon
 reconcile two spreadsheets and show missing entries,recon
-perform kyc for aadhaar for account opening,kyc
-cross check two reports and show mismatches,recon
-read text from this scanned pdf,ocr
-check identity for aadhaar,kyc
-perform kyc for user for account opening,kyc
-check identity for aadhar and extract name and dob,kyc
-do kyc for government id for account opening,kyc
-do kyc for government id for verification,kyc
-check identity for aadhar and extract name and dob,kyc
-hello,convo
-find mismatch in two excel files and tell me what changed,recon
+who is the founder of technodysis,convo
 good evening,convo
+do ocr,ocr
+cross check two reports and show mismatches,recon
+recom,recon
+recognize text from this scanned document and return plain text,ocr
+recom,recon
+what industries do you work with,convo
+check two spreadsheets,recon
+confirm identity for aadhar and extract name and dob,kyc
+good evening,convo
+check id,kyc
+read text from this form and show me the extracted words,ocr
+scan this receipt and return plain text,ocr
+find mismatch in two excel files and tell me what changed,recon
+extract text from this document,ocr
 check invoice report and payment report and show duplicates,recon
-check identity for aadhar for account opening,kyc
+explain your company,convo
 compare invoice report and payment report today,recon
 find mismatch in two reports and show mismatches,recon
-perform kyc for voter id,kyc
+scan this image,ocr
 verify two excel files and tell me what changed,recon
+find mismatch in payment records quickly,recon
+perform ocr on this pdf and return plain text,ocr
+extract text from this scanned pdf and show me the extracted words,ocr
+extract text,ocr
+aadhaar check,kyc
+validate government id for account opening,kyc
+pan check,kyc
+scan this scanned pdf and show me the extracted words,ocr
+pan check,kyc
+hello,convo
+find diffs,recon
 how can i contact technodysis,convo
-do you provide automation services,convo
-confirm identity for voter id for onboarding,kyc
-check identity for pan card and extract name and dob,kyc
-detect text in this invoice,ocr
-perform ocr on this document and return plain text,ocr
-do kyc for passport,kyc
+check identity for passport,kyc
+explain your company,convo
 highlight differences in transaction records and show duplicates,recon
 find mismatch in two csv files and show mismatches,recon
-verify voter id for account opening,kyc
-extract text from this photo and copy the text,ocr
-what does your company do,convo
-recognize text from this invoice and show me the extracted words,ocr
+do recon,recon
+do you provide ai services,convo
+read text from this image and copy the text,ocr
+what services does technodysis provide,convo
+extract text from this pdf and show me the extracted words,ocr
 check payment records and show missing entries,recon
 compare two excel files today,recon
-what projects have you done,convo
-scan this receipt,ocr
-perform ocr on this document and copy the text,ocr
-how can i contact technodysis,convo
-what services does technodysis provide,convo
-do you provide automation services,convo
-validate two statements and show missing entries,recon
-what services does technodysis provide,convo
-how can i contact technodysis,convo
-validate user and extract name and dob,kyc
-what does your company do,convo
-what is technodysis,convo
-verify customer for account opening,kyc
-what solutions do you offer,convo
-cross check two csv files today,recon
-check identity for passport,kyc
-match two csv files and show missing entries,recon
-good morning,convo
-do kyc for driving license for onboarding,kyc
-validate passport and extract name and dob,kyc
-compare transaction records today,recon
-check bank statement and ledger in detail,recon
-what does your company do,convo
-compare transaction records quickly,recon
+grab text,ocr
+validate pan card,kyc
+do you provide ai services,convo
 extract text from this receipt,ocr
-detect text in this scanned pdf,ocr
-do kyc for voter id for onboarding,kyc
-perform kyc for aadhaar for verification,kyc
+scan this scanned pdf and return plain text,ocr
+check identity for aadhar for onboarding,kyc
+how can i contact technodysis,convo
+what does your company do,convo
+do ocr,ocr
+match two csv files and tell me what changed,recon
+ocr image,ocr
+who is the founder of technodysis,convo
+validate two statements and show missing entries,recon
+good morning,convo
+what projects have you done,convo
+do kyc for user for account opening,kyc
+convert this scanned pdf,ocr
+check identity for pan card for verification,kyc
+what is technodysis,convo
+what does your company do,convo
+check identity for voter id for verification,kyc
+find mismatch in payment records and show mismatches,recon
+passport check,kyc
+confirm identity for voter id and extract name and dob,kyc
 what industries do you work with,convo
-validate transaction records,recon
+perform kyc for driving license and validate details,kyc
+confirm identity for customer,kyc
+match two csv files and show missing entries,recon
+where is technodysis located,convo
+convert this scanned document and show me the extracted words,ocr
+verify id,kyc
+compare transaction records quickly,recon
+extract text from this bill,ocr
+do you provide automation services,convo
 compare invoice report and payment report for me,recon
 validate two reports and tell me what changed,recon
-extract text from this form and show me the extracted words,ocr
-what projects have you done,convo
+read text from this scanned pdf and show me the extracted words,ocr
 cross check two csv files,recon
-what does your company do,convo
-who is the founder of technodysis,convo
+hey,convo
 highlight differences in two reports,recon
-what solutions do you offer,convo
-check two spreadsheets,recon
-scan this photo,ocr
-do kyc for customer,kyc
-perform ocr on this pdf,ocr
-scan this receipt and return plain text,ocr
-do kyc for voter id for onboarding,kyc
-check identity for driving license and validate details,kyc
-validate aadhaar for account opening,kyc
-perform kyc for government id and extract name and dob,kyc
-check identity for driving license,kyc
-detect text in this image and give me the content,ocr
-check identity for aadhaar for verification,kyc
-convert this receipt and return plain text,ocr
-convert this invoice and return plain text,ocr
-cross-check bank statement and ledger and show mismatches,recon
-good morning,convo
-confirm identity for customer for account opening,kyc
-hey,convo
-confirm identity for government id for account opening,kyc
-hello,convo
-extract text from this photo and return plain text,ocr
-cross check two statements and show missing entries,recon
-reconcile transaction records and tell me what changed,recon
-tell me about technodysis,convo
-do you provide ai services,convo
-validate voter id and extract name and dob,kyc
-perform kyc for passport and extract name and dob,kyc
-scan this pdf and return plain text,ocr
-extract text from this form and show me the extracted words,ocr
-perform ocr on this invoice and give me the content,ocr
-validate two files quickly,recon
-validate two excel files,recon
-do you provide ai services,convo
-do kyc for aadhar and extract name and dob,kyc
-highlight differences in transaction records for me,recon
-good evening,convo
-validate payment records,recon
-check identity for user and extract name and dob,kyc
-detect text in this receipt,ocr
-read text from this image,ocr
-scan this scanned pdf and return plain text,ocr
-highlight differences in transaction records today,recon
-validate two excel files quickly,recon
-verify bank statement and ledger in detail,recon
-scan this scanned pdf and show me the extracted words,ocr
-verify two spreadsheets and tell me what changed,recon
-extract text from this scanned pdf and give me the content,ocr
-verify government id and extract name and dob,kyc
-verify government id for account opening,kyc
-what projects have you done,convo
-validate two files today,recon
-verify voter id and validate details,kyc
-extract text from this scanned document and copy the text,ocr
-i want to do recon on my documents,recon
-check identity for driving license and validate details,kyc
-what industries do you work with,convo
-explain your company,convo
-find mismatch in bank statement and ledger and show mismatches,recon
-perform kyc for aadhaar and validate details,kyc
-where is technodysis located,convo
-perform kyc for customer for account opening,kyc
-explain your company,convo
-hi,convo
-do kyc for user for verification,kyc
-good evening,convo
-perform kyc for pan card for account opening,kyc
-recognize text from this receipt,ocr
-do you provide ai services,convo
-verify government id,kyc
-recognize text from this bill and copy the text,ocr
-tell me about technodysis,convo
-extract text from this bill and return plain text,ocr
-convert this image,ocr
-cross-check two reports quickly,recon
-check identity for pan card for onboarding,kyc
-cross check two statements in detail,recon
-who is the founder of technodysis,convo
-confirm identity for aadhar and extract name and dob,kyc
-check identity for voter id for verification,kyc
-recognize text from this pdf and give me the content,ocr
-where is technodysis located,convo
-where is technodysis located,convo
-verify two reports in detail,recon
-hey,convo
-verify pan card for account opening,kyc
-read text from this bill,ocr
-do recon to my invoice,recon
-confirm identity for voter id for account opening,kyc
-convert this document and copy the text,ocr
-what does your company do,convo
-do kyc for customer for onboarding,kyc
-extract text from this scanned pdf,ocr
-scan this scanned pdf and give me the content,ocr
-do kyc for aadhaar and validate details,kyc
-confirm identity for customer for account opening,kyc
-scan this photo and show me the extracted words,ocr
-read text from this form and return plain text,ocr
-recon my bank statements,recon
-read text from this document,ocr
-match transaction records in detail,recon
-hi,convo
-what projects have you done,convo
-extract text from this pdf and show me the extracted words,ocr
-recognize text from this document,ocr
-perform kyc for aadhaar for verification,kyc
-check identity for government id for onboarding,kyc
-hi,convo
-do you provide ai services,convo
-who is the founder of technodysis,convo
-perform kyc for customer and validate details,kyc
-who is the founder of technodysis,convo
-check identity for pan card,kyc
-who is the founder of technodysis,convo
-do kyc for pan card and validate details,kyc
-hey,convo
-check identity for government id for onboarding,kyc
-cross-check invoice report and payment report in detail,recon
-verify bank statement and ledger and tell me what changed,recon
-confirm identity for driving license for verification,kyc
-match two spreadsheets in detail,recon
-check identity for customer and validate details,kyc
-cross check two excel files and tell me what changed,recon
-verify voter id and validate details,kyc
-reconcile transaction records quickly,recon
-confirm identity for driving license for onboarding,kyc
-who is the founder of technodysis,convo
-explain your company,convo
-where is technodysis located,convo
-hello,convo
-validate passport and extract name and dob,kyc
-highlight differences in two csv files,recon
-verify driving license,kyc
-cross check two reports and show mismatches,recon
-check identity for customer and validate details,kyc
-validate voter id and validate details,kyc
-confirm identity for pan card and extract name and dob,kyc
-extract text from this photo,ocr
-do kyc for government id for onboarding,kyc
-good morning,convo
-compare two files,recon
-read text from this document and return plain text,ocr
-recognize text from this bill and return plain text,ocr
-how can i contact technodysis,convo
-tell me about technodysis,convo
-compare two reports for me,recon
-reconcile two spreadsheets quickly,recon
-what projects have you done,convo
-do kyc for government id for account opening,kyc
-who is the founder of technodysis,convo
-perform kyc for voter id for account opening,kyc
-check identity for user for onboarding,kyc
-do kyc for government id for verification,kyc
-do kyc for aadhaar for verification,kyc
-do kyc for pan card for onboarding,kyc
-verify two reports quickly,recon
-do kyc for user for account opening,kyc
-validate driving license for verification,kyc
-detect text in this pdf and copy the text,ocr
-perform kyc for user and validate details,kyc
-highlight differences in two csv files today,recon
-match two csv files and tell me what changed,recon
-good evening,convo
-cross-check bank statement and ledger and show mismatches,recon
-verify two reports quickly,recon
-reconcile two csv files,recon
-where is technodysis located,convo
-verify two files and show duplicates,recon
-scan this invoice and copy the text,ocr
-where is technodysis located,convo
-recognize text from this invoice and return plain text,ocr
-detect text in this pdf and copy the text,ocr
-detect text in this scanned pdf and show me the extracted words,ocr
-perform kyc for customer and extract name and dob,kyc
-read text from this bill and show me the extracted words,ocr
-perform kyc for pan card and validate details,kyc
-recognize text from this document and return plain text,ocr
-find mismatch in bank statement and ledger and tell me what changed,recon
-highlight differences in transaction records quickly,recon
-recognize text from this bill and return plain text,ocr
-validate aadhar for onboarding,kyc
-cross check two excel files today,recon
-where is technodysis located,convo
-verify pan card for account opening,kyc
-compare two files quickly,recon
-where is technodysis located,convo
-reconcile invoice report and payment report and tell me what changed,recon
-validate payment records and show mismatches,recon
-find mismatch in two reports and tell me what changed,recon
-extract text from this scanned pdf and copy the text,ocr
-extract text from this form,ocr
-validate bank statement and ledger,recon
-what does your company do,convo
-cross check two spreadsheets quickly,recon
-hi,convo
-reconcile two csv files for me,recon
+validate user,kyc
 detect text in this scanned document and show me the extracted words,ocr
-perform kyc for driving license and validate details,kyc
-do kyc for aadhaar,kyc
-confirm identity for voter id for verification,kyc
-extract text from this pdf and show me the extracted words,ocr
-verify pan card for verification,kyc
-perform ocr on this scanned pdf and give me the content,ocr
-verify user for onboarding,kyc
-scan this photo and return plain text,ocr
+check mismatch,recon
+validate driving license for account opening,kyc
+good evening,convo
+check identity for government id for onboarding,kyc
+what industries do you work with,convo
+do obr,ocr
+compare files,recon
+what solutions do you offer,convo
+recon,recon
+cross-check bank statement and ledger and show mismatches,recon
+extract text from this form and show me the extracted words,ocr
+obr,ocr
+good morning,convo
+do you provide ai services,convo
+perform ocr on this image,ocr
+check identity for user for verification,kyc
+detect text in this scanned pdf,ocr
+where is technodysis located,convo
+reconcile transaction records and tell me what changed,recon
+scan this bill and copy the text,ocr
+passport check,kyc
+hello,convo
+ocr this,ocr
+detect text in this scanned pdf,ocr
+validate two files quickly,recon
+ocr my file,ocr
+highlight differences in transaction records for me,recon
+do kyc for passport,kyc
+check id,kyc
+validate payment records,recon
+verify customer for account opening,kyc
+match files,recon
+match files,recon
+hello,convo
+detect text in this pdf and show me the extracted words,ocr
+highlight differences in transaction records today,recon
+verify bank statement and ledger in detail,recon
+validate voter id and extract name and dob,kyc
+verify two spreadsheets and tell me what changed,recon
+what industries do you work with,convo
+where is technodysis located,convo
+extract text from this image and show me the extracted words,ocr
+do kyc for aadhaar for verification,kyc
+find mismatch in bank statement and ledger and show mismatches,recon
+get text,ocr
+cross check two csv files today,recon
+cross-check two reports quickly,recon
+grab text,ocr
+verify id,kyc
+what does your company do,convo
+detect text in this pdf and copy the text,ocr
+get text,ocr
+tell me about technodysis,convo
+compare files,recon
+ocr image,ocr
+check identity for aadhar and validate details,kyc
+know your custard,kyc
+do odr,ocr
+do obr,ocr
+where is technodysis located,convo
+what is technodysis,convo
+do kyc for driving license for onboarding,kyc
+get text,ocr
+aadhaar check,kyc
+perform ocr on this document and show me the extracted words,ocr
+ocr this,ocr
+detect text in this invoice and return plain text,ocr
+what industries do you work with,convo
 scan this scanned pdf and copy the text,ocr
+hi,convo
+recognize text from this bill and return plain text,ocr
+perform kyc for customer and validate details,kyc
+what does your company do,convo
+extract text from this scanned pdf and give me the content,ocr
+highlight differences in two csv files,recon
+pan check,kyc
+scan this bill and return plain text,ocr
+confirm identity for aadhaar for account opening,kyc
+check identity for government id and extract name and dob,kyc
+do kyc for pan card for verification,kyc
+check id,kyc
+compare two files,recon
+recognize text from this receipt and copy the text,ocr
+verify user and extract name and dob,kyc
+do kyc for user and extract name and dob,kyc
+recognize text from this invoice and return plain text,ocr
+verify voter id and validate details,kyc
+what services does technodysis provide,convo
+pan check,kyc
+do ocr,ocr
+ocr image,ocr
+validate user,kyc
+check identity for user for verification,kyc
+ocr scan,ocr
+verify two reports quickly,recon
+perform kyc for government id and extract name and dob,kyc
+detect text in this scanned document and show me the extracted words,ocr
+extract text from this scanned pdf and give me the content,ocr
+what projects have you done,convo
+hi,convo
+validate user for verification,kyc
+validate customer for account opening,kyc
+cross-check bank statement and ledger and show mismatches,recon
+verify two reports quickly,recon
+what projects have you done,convo
+find mismatch in two reports and tell me what changed,recon
+passport check,kyc
+verify two files and show duplicates,recon
+scan this invoice,ocr
+do recom,recon
+convert this invoice,ocr
+detect text in this pdf and copy the text,ocr
+perform ocr on this photo and give me the content,ocr
+where is technodysis located,convo
+perform odr,ocr
 who is the founder of technodysis,convo
-hey,convo
-recognize text from this form and copy the text,ocr
+scan this bill and show me the extracted words,ocr
+compare two files quickly,recon
+reconcile invoice report and payment report and tell me what changed,recon
+good evening,convo
+extract text from this image and return plain text,ocr
+perform ocr on this bill and return plain text,ocr
+validate bank statement and ledger,recon
+confirm identity for government id,kyc
+cross check two spreadsheets quickly,recon
+perform kyc for pan card and validate details,kyc
+how can i contact technodysis,convo
+check identity for passport and validate details,kyc
+compare files,recon
+verify voter id for onboarding,kyc
+compare files,recon
+do kyc,kyc
+recognize text from this receipt,ocr
+do kyc for passport and validate details,kyc
+do recon,recon
+validate user,kyc
 cross check invoice report and payment report and show mismatches,recon
 compare two csv files in detail,recon
-check identity for government id and validate details,kyc
-perform kyc for user for account opening,kyc
-convert this invoice and return plain text,ocr
-perform kyc for customer for verification,kyc
-convert this pdf,ocr
-hello,convo
-who is the founder of technodysis,convo
-verify two spreadsheets quickly,recon
-check identity for aadhaar and validate details,kyc
-detect text in this invoice and give me the content,ocr
-cross check two csv files today,recon
-who is the founder of technodysis,convo
-do kyc for customer for onboarding,kyc
-find mismatch in two files for me,recon
+check identity for customer,kyc
+convert this receipt and give me the content,ocr
+validate driving license for verification,kyc
+tell me about technodysis,convo
+convert this image,ocr
+check id,kyc
+pan check,kyc
+what industries do you work with,convo
 reconcile two statements quickly,recon
 highlight differences in bank statement and ledger and show mismatches,recon
-good morning,convo
-perform kyc for government id for account opening,kyc
-recognize text from this scanned document and return plain text,ocr
-scan this receipt and give me the content,ocr
-convert this document and give me the content,ocr
+validate customer,kyc
+convert this photo and copy the text,ocr
+who is the founder of technodysis,convo
 find mismatch in transaction records today,recon
-extract text from this scanned pdf and copy the text,ocr
-check identity for user and validate details,kyc
-convert this receipt,ocr
-recon my bank account slips,recon
-what solutions do you offer,convo
+confirm identity for passport and validate details,kyc
+extract text from this scanned document and copy the text,ocr
+validate aadhar for onboarding,kyc
 check transaction records and tell me what changed,recon
 verify payment records in detail,recon
-extract text from this image and show me the extracted words,ocr
-check identity for customer,kyc
-convert this scanned pdf and give me the content,ocr
-read text from this photo and give me the content,ocr
+perform recom,recon
+do odr,ocr
+convert this invoice,ocr
 validate invoice report and payment report and show missing entries,recon
-do you provide ai services,convo
-tell me about technodysis,convo
-validate customer,kyc
-what services does technodysis provide,convo
-read text from this document and return plain text,ocr
-what services does technodysis provide,convo
-confirm identity for voter id,kyc
-do you provide automation services,convo
-verify two statements and show duplicates,recon
-do kyc for pan card and extract name and dob,kyc
-what is technodysis,convo
-validate pan card for onboarding,kyc
-do kyc for passport and validate details,kyc
-reconcile two statements in detail,recon
-where is technodysis located,convo
-validate government id for account opening,kyc
-detect text in this bill,ocr
-perform kyc for user,kyc
-do kyc for pan card and extract name and dob,kyc
-cross-check bank statement and ledger and show mismatches,recon
-recognize text from this form and show me the extracted words,ocr
-do kyc for pan card for onboarding,kyc
-good evening,convo
-confirm identity for aadhaar and extract name and dob,kyc
-read text from this image and show me the extracted words,ocr
-verify two excel files and show mismatches,recon
-read text from this bill and give me the content,ocr
-perform ocr on this receipt,ocr
-find mismatch in payment records and show mismatches,recon
-scan this receipt and show me the extracted words,ocr
-find mismatch in payment records quickly,recon
-detect text in this image and return plain text,ocr
-what projects have you done,convo
-scan this photo and copy the text,ocr
-read text from this scanned document and show me the extracted words,ocr
-convert this scanned pdf,ocr
-what industries do you work with,convo
-recognize text from this image and show me the extracted words,ocr
-verify pan card,kyc
-verify bank statement and ledger quickly,recon
-perform kyc for aadhar and validate details,kyc
-explain your company,convo
-verify two csv files in detail,recon
-detect text in this pdf and copy the text,ocr
-match two csv files in detail,recon
-detect text in this pdf and return plain text,ocr
-recognize text from this image and return plain text,ocr
-highlight differences in two files in detail,recon
-recognize text from this image and return plain text,ocr
-find mismatch in two files and show mismatches,recon
-verify voter id for onboarding,kyc
+do kyc for government id and extract name and dob,kyc
 validate two reports and show duplicates,recon
-perform kyc for aadhar and validate details,kyc
-validate two statements and show missing entries,recon
-verify two reports today,recon
-read text from this form and show me the extracted words,ocr
-good evening,convo
-perform ocr on this pdf,ocr
-reconcile invoice report and payment report for me,recon
+ocr scan,ocr
+what is technodysis,convo
+perform kyc for customer for verification,kyc
+extract text from this pdf and show me the extracted words,ocr
+good morning,convo
+do odr,ocr
+know your custard,kyc
+reconcile two statements in detail,recon
+validate user,kyc
+convert to text,ocr
+extract text from this bill and return plain text,ocr
+what services does technodysis provide,convo
+detect text in this photo and copy the text,ocr
+do kyc for user for account opening,kyc
+do kyc for pan card and validate details,kyc
+compare files,recon
+verify two excel files and show mismatches,recon
+perform ocr on this document and show me the extracted words,ocr
+what industries do you work with,convo
+check mismatch,recon
+check id,kyc
+hey,convo
+recognize text from this scanned document and give me the content,ocr
+verify pan card for account opening,kyc
+do recon,recon
+confirm identity for customer for account opening,kyc
+verify bank statement and ledger quickly,recon
+check identity for customer and validate details,kyc
+do you provide automation services,convo
+match two csv files in detail,recon
+find diffs,recon
+what is technodysis,convo
+recognize text from this bill and return plain text,ocr
+find mismatch in two files and show mismatches,recon
+validate user,kyc
+hello,convo
+what is technodysis,convo
+verify government id for account opening,kyc
+hey,convo

@@ -143,20 +143,22 @@ def build_smart_intent_prompt():
     """
     Combined prompt: Handles Correction, Classification, Ambiguity, AND Gibberish.
     UPDATED: Strictly distinguishes between ACTION (doing a task) and INQUIRY (asking about it).
+    ADDED: Dedicated 'greeting' intent to handle hi/hello smoothly.
     """
     template = """
     You are an intelligent intent classifier for a company bot.
     
     CRITICAL DISTINCTION:
-    - If the user asks a QUESTION about a topic (e.g., "What is KYC?", "Do you do OCR?", "How does recon work?"), the intent must be "convo".
+    - If the user asks a QUESTION about a topic, the intent must be "convo".
     - Only select specific intents ("recon", "ocr", "kyc") if the user explicitly wants to PERFORM that action NOW.
 
     The valid intents are:
     1. recon: User wants to START reconciling files (e.g., "start recon", "compare these files").
     2. ocr: User wants to UPLOAD or EXTRACT text (e.g., "ocr this image", "extract text").
     3. kyc: User wants to VERIFY identity (e.g., "verify me", "do kyc", "upload passport").
-    4. convo: General chat, greetings, OR questions ABOUT the company/services (e.g., "Do you offer KYC?", "What is reconciliation?").
-    5. unknown: Gibberish or random characters.
+    4. convo: Questions ABOUT the company/services (e.g., "Do you offer KYC?", "What is reconciliation?").
+    5. greeting: Simple conversational greetings (e.g., "hi", "hello", "hey", "good morning").
+    6. unknown: Gibberish or random characters.
 
     YOUR TASK:
     Analyze the user text and return a JSON object.
@@ -206,11 +208,11 @@ def build_smart_intent_prompt():
     User: "Does your company do OCR?" (Inquiry)
     JSON: {{"type": "direct", "intent": "convo", "confidence": 0.99}}
 
+    User: "Hello" (Greeting)
+    JSON: {{"type": "direct", "intent": "greeting", "confidence": 1.00}}
+
     User: "What is the process for KYC?" (Inquiry)
     JSON: {{"type": "direct", "intent": "convo", "confidence": 0.99}}
-
-    User: "Start identity verification" (Action)
-    JSON: {{"type": "direct", "intent": "kyc", "confidence": 0.98}}
 
     User: "asdf jkl lojz"
     JSON: {{"type": "direct", "intent": "unknown", "confidence": 1.0}}
@@ -220,6 +222,7 @@ def build_smart_intent_prompt():
     JSON Response:
     """
     return PromptTemplate(template=template, input_variables=["query"])
+
 def analyze_intent_smart(llm, prompt_template, query):
     prompt = prompt_template.format(query=query)
     raw = llm.invoke(prompt).content.strip()
@@ -254,14 +257,19 @@ def handle_final_intent(intent, llm, query, chunks, embedder, index):
         st.error("Sorry, I didn't understand what you mean. Can you please repeat?")
         return
 
-    # 2. Show Success Message for valid intents
+    # 2. Handle Greetings instantly (Bypasses the RAG & Execution banner)
+    if intent == "greeting":
+        st.success("👋 Hello I am technodysis chatbot how can I help you")
+        return
+
+    # 3. Show Success Message for valid tasks/convo
     st.markdown(f"""
     <div style="background-color:#d4edda;padding:10px;border-radius:5px;border:1px solid #c3e6cb;">
         <h3 style="color:#155724;margin:0;">🚀 Executing: {intent.upper()}</h3>
     </div><br>
     """, unsafe_allow_html=True)
 
-    # 3. Execute Logic
+    # 4. Execute Logic
     if intent == "convo":
         results = rag_search(query, chunks, embedder, index)
         response = answer_from_context(llm, query, results)

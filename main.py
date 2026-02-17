@@ -2,6 +2,8 @@ import streamlit as st
 import os
 import tempfile
 import json
+import io
+import base64
 from dotenv import load_dotenv
 from docx import Document
 import faiss
@@ -10,13 +12,16 @@ from sentence_transformers import SentenceTransformer
 from langchain_google_genai import ChatGoogleGenerativeAI
 from faster_whisper import WhisperModel
 from langchain_core.prompts import PromptTemplate
+from gtts import gTTS
 
 # ============================================================
 # 0) CONFIGURATION & INIT
 # ============================================================
 
+# Load environment variables FIRST so global variables can use them
+load_dotenv()
+
 def init_app():
-    load_dotenv()
     st.set_page_config(page_title="Technodysis Voice Chatbot", layout="centered")
     st.title("🎙️🤖 Technodysis Voice Chatbot")
 
@@ -73,7 +78,48 @@ def get_voice_query(whisper_model):
     return voice_query
 
 # ============================================================
-# 2) RAG SETUP (KNOWLEDGE BASE)
+# 2) GTTS MODEL (TEXT-TO-SPEECH)
+# ============================================================
+
+def generate_speech(text):
+    """Generates audio bytes using Google TTS."""
+    try:
+        tts = gTTS(text=text, lang='en', slow=False)
+        fp = io.BytesIO()
+        tts.write_to_fp(fp)
+        fp.seek(0)
+        return fp.read()
+    except Exception as e:
+        st.error(f"Voice Error: {e}")
+        return None
+
+def display_and_speak(text, is_success=False, is_error=False, is_warning=False):
+    """Displays the text on screen and GUARANTEES autoplay via HTML/Base64."""
+    # 1. Display the text
+    if is_error:
+        st.error(text)
+    elif is_success:
+        st.success(text)
+    elif is_warning:
+        st.warning(text)
+    else:
+        st.info(text)
+
+    # 2. Generate and play the audio with a spinner
+    with st.spinner("Generating audio response... 🎧"):
+        audio_bytes = generate_speech(text)
+        if audio_bytes:
+            # The Autoplay HTML Workaround
+            b64 = base64.b64encode(audio_bytes).decode()
+            audio_html = f"""
+                <audio controls autoplay="true">
+                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                </audio>
+            """
+            st.markdown(audio_html, unsafe_allow_html=True)
+
+# ============================================================
+# 3) RAG SETUP (KNOWLEDGE BASE)
 # ============================================================
 
 def load_docx(path):
@@ -136,15 +182,10 @@ def answer_from_context(llm, query, context_chunks):
     return llm.invoke(prompt).content
 
 # ============================================================
-# 3) SMART INTENT CLASSIFIER (Auto + Correction + Top 3 + Gibberish)
+# 4) SMART INTENT CLASSIFIER
 # ============================================================
 
 def build_smart_intent_prompt():
-    """
-    Combined prompt: Handles Correction, Classification, Ambiguity, AND Gibberish.
-    UPDATED: Strictly distinguishes between ACTION (doing a task) and INQUIRY (asking about it).
-    ADDED: Dedicated 'greeting' intent to handle hi/hello smoothly.
-    """
     template = """
     You are an intelligent intent classifier for a company bot.
     
@@ -227,17 +268,15 @@ def analyze_intent_smart(llm, prompt_template, query):
     prompt = prompt_template.format(query=query)
     raw = llm.invoke(prompt).content.strip()
     
-    # Clean up markdown formatting often returned by LLMs
     raw = raw.replace("```json", "").replace("```", "").strip()
     
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        # If the LLM output is broken, assume it didn't understand
         return {"type": "direct", "intent": "unknown", "confidence": 0.0}
 
 # ============================================================
-# 4) UI HANDLERS & EXECUTION
+# 5) UI HANDLERS & EXECUTION
 # ============================================================
 
 def get_query_from_ui(whisper_model):
@@ -250,45 +289,41 @@ def get_query_from_ui(whisper_model):
     return get_voice_query(whisper_model).strip()
 
 def handle_final_intent(intent, llm, query, chunks, embedder, index):
-    """Executes the final chosen intent."""
+    """Executes the final chosen intent and speaks the response."""
     
-    # 1. Handle Unknown / Gibberish first
     if intent == "unknown":
-        st.error("Sorry, I didn't understand what you mean. Can you please repeat?")
+        display_and_speak("Sorry, I didn't understand what you mean. Can you please repeat?", is_error=True)
         return
 
-    # 2. Handle Greetings instantly (Bypasses the RAG & Execution banner)
     if intent == "greeting":
-        st.success("👋 Hello I am technodysis chatbot how can I help you")
+        display_and_speak("Hello! I am the Technodysis chatbot. How can I help you today?", is_success=True)
         return
 
-    # 3. Show Success Message for valid tasks/convo
     st.markdown(f"""
-    <div style="background-color:#d4edda;padding:10px;border-radius:5px;border:1px solid #c3e6cb;">
+    <div style="background-color:#d4edda;padding:10px;border-radius:5px;border:1px solid #c3e6cb;margin-bottom:15px;">
         <h3 style="color:#155724;margin:0;">🚀 Executing: {intent.upper()}</h3>
-    </div><br>
+    </div>
     """, unsafe_allow_html=True)
 
-    # 4. Execute Logic
     if intent == "convo":
         results = rag_search(query, chunks, embedder, index)
         response = answer_from_context(llm, query, results)
-        st.write(response)
+        display_and_speak(response)
         
     elif intent == "recon":
         st.session_state.recon_stage = "confirm"
-        st.warning("Do you want to start Reconciliation? (yes / no)")
+        display_and_speak("Do you want to start Reconciliation? Please type or say yes or no.", is_warning=True)
         
     elif intent == "ocr":
-        st.info("📄 **OCR Module Active**: Please upload your image/PDF.")
+        display_and_speak("OCR Module Active. Please upload your document below.")
         st.file_uploader("Upload Document", key="ocr_uploader")
         
     elif intent == "kyc":
-        st.info("🪪 **KYC Module Active**: Ready for identity verification.")
+        display_and_speak("KYC Module Active. I am ready for identity verification.")
         st.button("Start Verification Process")
 
 # ============================================================
-# 5) RECON FLOW LOGIC
+# 6) RECON FLOW LOGIC
 # ============================================================
 
 def run_recon_flow():
@@ -309,27 +344,26 @@ def run_recon_flow():
         c2.file_uploader("File 2 (CSV)", key="f2")
 
 # ============================================================
-# 6) MAIN APP LOGIC
+# 7) MAIN APP LOGIC
 # ============================================================
 
 def main():
     init_app()
     init_session_state()
 
+    # Initialize models
     llm = load_llm()
     whisper_model = load_whisper_model()
     chunks, embedder, index = setup_rag()
-    
     intent_prompt = build_smart_intent_prompt()
 
     # --- 1. Get Input ---
     query = get_query_from_ui(whisper_model)
     
-    # Only process if query exists and is new (or we are in a correction flow)
     if query and query != st.session_state.final_query:
         st.session_state.final_query = query
         
-        # Reset specific states to avoid loops
+        # Reset specific states
         st.session_state.suggested_intent = ""
         st.session_state.top3_options = None
         st.session_state.awaiting_correction_confirmation = False
@@ -339,7 +373,7 @@ def main():
         # --- 2. Analyze Intent ---
         result = analyze_intent_smart(llm, intent_prompt, query)
         
-        # Route based on result type
+        # --- 3. Route Intent ---
         if result["type"] == "correction":
             st.session_state.suggested_intent = result["suggested_intent"]
             st.session_state.awaiting_correction_confirmation = True
@@ -350,12 +384,10 @@ def main():
             st.session_state.awaiting_top3_choice = True
             st.rerun()
             
-        else: # type == direct
+        else:
             handle_final_intent(result["intent"], llm, query, chunks, embedder, index)
 
-    # --- 3. Handle Pending Interactions ---
-    
-    # A) Correction Confirmation ("Did you mean...?")
+    # --- 4. Handle Pending Interactions ---
     if st.session_state.awaiting_correction_confirmation:
         st.info(f"🧐 Did you mean **{st.session_state.suggested_intent.upper()}**?")
         col1, col2 = st.columns(2)
@@ -367,26 +399,20 @@ def main():
             
         if col2.button("❌ No"):
             st.session_state.awaiting_correction_confirmation = False
-            # Fallback to general conversation
             handle_final_intent("convo", llm, st.session_state.final_query, chunks, embedder, index)
 
-    # B) Top 3 Choice ("I'm not sure...")
     if st.session_state.awaiting_top3_choice:
         st.warning("⚠️ I'm not fully sure. Please choose what you meant:")
-        
         options_list = st.session_state.top3_options
-        # Create labels like "OCR (45%)"
         radio_options = [f"{opt['intent'].upper()} ({int(opt['score']*100)}%)" for opt in options_list]
-        
         choice = st.radio("Select intent:", radio_options)
         
         if st.button("Confirm Selection"):
-            # Extract "OCR" from "OCR (45%)"
             selected_intent = choice.split(" ")[0].lower()
             st.session_state.awaiting_top3_choice = False
             handle_final_intent(selected_intent, llm, st.session_state.final_query, chunks, embedder, index)
 
-    # --- 4. Run any active flows (like Recon uploads) ---
+    # --- 5. Run flows ---
     run_recon_flow()
 
 if __name__ == "__main__":

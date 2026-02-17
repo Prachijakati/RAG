@@ -2,8 +2,6 @@ import streamlit as st
 import os
 import tempfile
 import json
-import io
-import base64
 from dotenv import load_dotenv
 from docx import Document
 import faiss
@@ -12,7 +10,7 @@ from sentence_transformers import SentenceTransformer
 from langchain_google_genai import ChatGoogleGenerativeAI
 from faster_whisper import WhisperModel
 from langchain_core.prompts import PromptTemplate
-from gtts import gTTS
+import pyttsx3
 
 # ============================================================
 # 0) CONFIGURATION & INIT
@@ -78,23 +76,11 @@ def get_voice_query(whisper_model):
     return voice_query
 
 # ============================================================
-# 2) GTTS MODEL (TEXT-TO-SPEECH)
+# 2) PYTTSX3 MODEL (LOCAL TEXT-TO-SPEECH)
 # ============================================================
 
-def generate_speech(text):
-    """Generates audio bytes using Google TTS."""
-    try:
-        tts = gTTS(text=text, lang='en', slow=False)
-        fp = io.BytesIO()
-        tts.write_to_fp(fp)
-        fp.seek(0)
-        return fp.read()
-    except Exception as e:
-        st.error(f"Voice Error: {e}")
-        return None
-
 def display_and_speak(text, is_success=False, is_error=False, is_warning=False):
-    """Displays the text on screen and GUARANTEES autoplay via HTML/Base64."""
+    """Displays the text on screen and instantly speaks it using the local OS."""
     # 1. Display the text
     if is_error:
         st.error(text)
@@ -105,18 +91,19 @@ def display_and_speak(text, is_success=False, is_error=False, is_warning=False):
     else:
         st.info(text)
 
-    # 2. Generate and play the audio with a spinner
-    with st.spinner("Generating audio response... 🎧"):
-        audio_bytes = generate_speech(text)
-        if audio_bytes:
-            # The Autoplay HTML Workaround
-            b64 = base64.b64encode(audio_bytes).decode()
-            audio_html = f"""
-                <audio controls autoplay="true">
-                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                </audio>
-            """
-            st.markdown(audio_html, unsafe_allow_html=True)
+    # 2. Speak the text instantly (No downloading, no API calls)
+    with st.spinner("Speaking... 🗣️"):
+        try:
+            # Re-initialize inside the function to avoid thread looping issues in Streamlit
+            engine = pyttsx3.init()
+            
+            # Optional: Slow down the speech rate slightly (default is ~200)
+            engine.setProperty('rate', 175) 
+            
+            engine.say(text)
+            engine.runAndWait()
+        except Exception as e:
+            st.error(f"Voice Error: {e}")
 
 # ============================================================
 # 3) RAG SETUP (KNOWLEDGE BASE)
@@ -238,25 +225,6 @@ def build_smart_intent_prompt():
         "intent": "unknown",
         "confidence": 1.0
     }}
-
-    EXAMPLES:
-    User: "I want to perform reconn"
-    JSON: {{"type": "correction", "suggested_intent": "recon", "original_term": "reconn"}}
-
-    User: "Extract text from this invoice" (Action)
-    JSON: {{"type": "direct", "intent": "ocr", "confidence": 0.98}}
-
-    User: "Does your company do OCR?" (Inquiry)
-    JSON: {{"type": "direct", "intent": "convo", "confidence": 0.99}}
-
-    User: "Hello" (Greeting)
-    JSON: {{"type": "direct", "intent": "greeting", "confidence": 1.00}}
-
-    User: "What is the process for KYC?" (Inquiry)
-    JSON: {{"type": "direct", "intent": "convo", "confidence": 0.99}}
-
-    User: "asdf jkl lojz"
-    JSON: {{"type": "direct", "intent": "unknown", "confidence": 1.0}}
 
     Now, analyze this text:
     User: "{query}"

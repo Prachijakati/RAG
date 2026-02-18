@@ -2,10 +2,13 @@ import streamlit as st
 import os
 import tempfile
 import json
+import wave
+import numpy as np
+import pyaudio
+import torch
 from dotenv import load_dotenv
 from docx import Document
 import faiss
-import numpy as np
 from sentence_transformers import SentenceTransformer
 from langchain_google_genai import ChatGoogleGenerativeAI
 from faster_whisper import WhisperModel
@@ -44,26 +47,94 @@ def load_llm():
     )
 
 # ============================================================
-# 1) WHISPER MODEL (SPEECH-TO-TEXT)
+# 1) AI MODELS & LOCAL MIC (VAD + NOISEREDUCE + WHISPER)
 # ============================================================
 
 @st.cache_resource
 def load_whisper_model():
     return WhisperModel("base", device="cpu", compute_type="int8")
 
-def get_voice_query(whisper_model):
-    audio_value = st.audio_input("Record your question", sample_rate=48000)
+@st.cache_resource
+def load_vad_model():
+    """Loads the Silero Voice Activity Detection (VAD) model."""
+    model, utils = torch.hub.load(
+        repo_or_dir='snakers4/silero-vad',
+        model='silero_vad',
+        force_reload=False,
+        trust_repo=True
+    )
+    return model
 
-    if not audio_value:
-        return ""
+def get_voice_query(whisper_model, vad_model):
+    """Listens using PyAudio, uses VAD to stop on silence, and transcribes directly."""
+    
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1
+    RATE = 16000
+    CHUNK = 512  # 32ms audio chunks
+    
+    audio = pyaudio.PyAudio()
+    stream = audio.open(format=FORMAT, channels=CHANNELS,
+                        rate=RATE, input=True,
+                        frames_per_buffer=CHUNK)
+    
+    status_text = st.empty()
+    status_text.warning("🟢 Listening... Speak now! (Waiting for 2.5s of silence)")
+    
+    frames = []
+    max_silence_chunks = int((RATE / CHUNK) * 2.5) # 2.5 seconds of silence
+    silence_counter = 0
+    started_speaking = False
+    max_wait_chunks = int((RATE / CHUNK) * 10) # 10s timeout
+    total_chunks = 0
+    
+    # --- REAL-TIME LISTENING LOOP ---
+    while True:
+        data = stream.read(CHUNK, exception_on_overflow=False)
+        frames.append(data)
+        total_chunks += 1
+        
+        # Check for voice
+        audio_int16 = np.frombuffer(data, np.int16)
+        audio_float32 = audio_int16.astype(np.float32) / 32768.0
+        tensor = torch.from_numpy(audio_float32)
+        
+        with torch.no_grad():
+            speech_prob = vad_model(tensor, RATE).item()
+        
+        if speech_prob > 0.5:
+            started_speaking = True
+            silence_counter = 0
+        elif started_speaking:
+            silence_counter += 1
+                
+        # Stop conditions
+        if started_speaking and silence_counter >= max_silence_chunks:
+            status_text.success("🛑 Silence detected! Processing audio...")
+            break
+            
+        if not started_speaking and total_chunks >= max_wait_chunks:
+            status_text.error("No human voice detected. Please try again.")
+            stream.stop_stream()
+            stream.close()
+            audio.terminate()
+            return ""
 
-    st.audio(audio_value)
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
 
+    # --- SAVE AND TRANSCRIBE DIRECTLY ---
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-        f.write(audio_value.getvalue())
         audio_path = f.name
+        
+    with wave.open(audio_path, 'wb') as wf:
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(audio.get_sample_size(FORMAT))
+        wf.setframerate(RATE)
+        wf.writeframes(b''.join(frames))
 
-    with st.spinner("Transcribing your voice..."):
+    with st.spinner("Transcribing with AI... 🧠"):
         segments, info = whisper_model.transcribe(
             audio_path,
             language="en",
@@ -71,8 +142,12 @@ def get_voice_query(whisper_model):
         )
         voice_query = "".join(segment.text for segment in segments).strip()
 
+    status_text.empty()
     st.success("Transcription done ✅")
     st.write(f"**You said:** {voice_query}")
+    
+    os.remove(audio_path) # Clean up the single temp file
+    
     return voice_query
 
 # ============================================================
@@ -81,7 +156,6 @@ def get_voice_query(whisper_model):
 
 def display_and_speak(text, is_success=False, is_error=False, is_warning=False):
     """Displays the text on screen and instantly speaks it using the local OS."""
-    # 1. Display the text
     if is_error:
         st.error(text)
     elif is_success:
@@ -91,15 +165,10 @@ def display_and_speak(text, is_success=False, is_error=False, is_warning=False):
     else:
         st.info(text)
 
-    # 2. Speak the text instantly (No downloading, no API calls)
     with st.spinner("Speaking... 🗣️"):
         try:
-            # Re-initialize inside the function to avoid thread looping issues in Streamlit
             engine = pyttsx3.init()
-            
-            # Optional: Slow down the speech rate slightly (default is ~200)
             engine.setProperty('rate', 175) 
-            
             engine.say(text)
             engine.runAndWait()
         except Exception as e:
@@ -247,18 +316,22 @@ def analyze_intent_smart(llm, prompt_template, query):
 # 5) UI HANDLERS & EXECUTION
 # ============================================================
 
-def get_query_from_ui(whisper_model):
+def get_query_from_ui(whisper_model, vad_model):
     st.subheader("Choose Input Method")
     input_mode = st.radio("Mode:", ["⌨️ Type", "🎙️ Voice"], horizontal=True)
 
     if input_mode == "⌨️ Type":
         return st.text_input("Ask something").strip()
     
-    return get_voice_query(whisper_model).strip()
+    # Handle the Voice mode with a clean button
+    if input_mode == "🎙️ Voice":
+        if st.button("🎙️ Start Listening"):
+            return get_voice_query(whisper_model, vad_model).strip()
+    
+    return ""
 
 def handle_final_intent(intent, llm, query, chunks, embedder, index):
     """Executes the final chosen intent and speaks the response."""
-    
     if intent == "unknown":
         display_and_speak("Sorry, I didn't understand what you mean. Can you please repeat?", is_error=True)
         return
@@ -322,11 +395,12 @@ def main():
     # Initialize models
     llm = load_llm()
     whisper_model = load_whisper_model()
+    vad_model = load_vad_model()
     chunks, embedder, index = setup_rag()
     intent_prompt = build_smart_intent_prompt()
 
     # --- 1. Get Input ---
-    query = get_query_from_ui(whisper_model)
+    query = get_query_from_ui(whisper_model, vad_model)
     
     if query and query != st.session_state.final_query:
         st.session_state.final_query = query

@@ -14,6 +14,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from faster_whisper import WhisperModel
 from langchain_core.prompts import PromptTemplate
 import pyttsx3
+import re
 
 # ============================================================
 # 0) CONFIGURATION & INIT
@@ -138,9 +139,16 @@ def get_voice_query(whisper_model, vad_model):
         segments, info = whisper_model.transcribe(
             audio_path,
             language="en",
-            task="transcribe"
+            task="transcribe",
+            initial_prompt="Technodysis"
         )
         voice_query = "".join(segment.text for segment in segments).strip()
+
+        # 2. Define the phonetic mistakes Whisper usually makes
+        mistakes = r'\b(technotises|techmodisese|techno dices|technodises|techno thesis|techno\s*dysis)\b'
+        
+        # 3. Force-correct them to "Technodysis" (case-insensitive)
+        voice_query = re.sub(mistakes, 'Technodysis', voice_query, flags=re.IGNORECASE)
 
     status_text.empty()
     st.success("Transcription done ✅")

@@ -6,6 +6,9 @@ import wave
 import numpy as np
 import pyaudio
 import torch
+import asyncio
+import edge_tts
+import re
 from dotenv import load_dotenv
 from docx import Document
 import faiss
@@ -13,15 +16,25 @@ from sentence_transformers import SentenceTransformer
 from langchain_google_genai import ChatGoogleGenerativeAI
 from faster_whisper import WhisperModel
 from langchain_core.prompts import PromptTemplate
-import pyttsx3
-import re
+from deep_translator import GoogleTranslator
 
 # ============================================================
-# 0) CONFIGURATION & INIT
+# 0) CONFIGURATION, INIT & DYNAMIC LANGUAGES
 # ============================================================
 
-# Load environment variables FIRST so global variables can use them
 load_dotenv()
+
+@st.cache_data
+def get_dynamic_language_mapping():
+    """Fetches supported languages from Google Translate to avoid hardcoding."""
+    langs_dict = GoogleTranslator().get_supported_languages(as_dict=True)
+    # Reverse to map 'hi' -> 'Hindi', 'kn' -> 'Kannada'
+    return {iso: name.title() for name, iso in langs_dict.items()}
+
+@st.cache_data
+def get_edge_tts_voices():
+    """Dynamically fetches all available voices from Edge-TTS."""
+    return asyncio.run(edge_tts.list_voices())
 
 def init_app():
     st.set_page_config(page_title="Technodysis Voice Chatbot", layout="centered")
@@ -33,9 +46,9 @@ def init_session_state():
         "final_query": "",
         "awaiting_correction_confirmation": False,
         "suggested_intent": "",
-        "original_query": "",
         "top3_options": None,
-        "awaiting_top3_choice": False
+        "awaiting_top3_choice": False,
+        "detected_iso": "en" # Stores the dynamically detected language ISO code
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -47,8 +60,12 @@ def load_llm():
         api_key=os.getenv("GOOGLE_API_KEY")
     )
 
+# Load global mappings
+ISO_TO_NAME = get_dynamic_language_mapping()
+EDGE_VOICES = get_edge_tts_voices()
+
 # ============================================================
-# 1) AI MODELS & LOCAL MIC (VAD + NOISEREDUCE + WHISPER)
+# 1) AI MODELS & LOCAL MIC (VAD + WHISPER)
 # ============================================================
 
 @st.cache_resource
@@ -57,7 +74,6 @@ def load_whisper_model():
 
 @st.cache_resource
 def load_vad_model():
-    """Loads the Silero Voice Activity Detection (VAD) model."""
     model, utils = torch.hub.load(
         repo_or_dir='snakers4/silero-vad',
         model='silero_vad',
@@ -67,35 +83,31 @@ def load_vad_model():
     return model
 
 def get_voice_query(whisper_model, vad_model):
-    """Listens using PyAudio, uses VAD to stop on silence, and transcribes directly."""
+    """Listens, detects silence, and translates spoken audio to English."""
     
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
     RATE = 16000
-    CHUNK = 512  # 32ms audio chunks
+    CHUNK = 512
     
     audio = pyaudio.PyAudio()
-    stream = audio.open(format=FORMAT, channels=CHANNELS,
-                        rate=RATE, input=True,
-                        frames_per_buffer=CHUNK)
+    stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
     
     status_text = st.empty()
-    status_text.warning("🟢 Listening... Speak now! (Waiting for 2.5s of silence)")
+    status_text.warning("🟢 Listening... Speak now! (Waiting for silence)")
     
     frames = []
-    max_silence_chunks = int((RATE / CHUNK) * 2.5) # 2.5 seconds of silence
+    max_silence_chunks = int((RATE / CHUNK) * 2.5) 
     silence_counter = 0
     started_speaking = False
-    max_wait_chunks = int((RATE / CHUNK) * 10) # 10s timeout
+    max_wait_chunks = int((RATE / CHUNK) * 10) 
     total_chunks = 0
     
-    # --- REAL-TIME LISTENING LOOP ---
     while True:
         data = stream.read(CHUNK, exception_on_overflow=False)
         frames.append(data)
         total_chunks += 1
         
-        # Check for voice
         audio_int16 = np.frombuffer(data, np.int16)
         audio_float32 = audio_int16.astype(np.float32) / 32768.0
         tensor = torch.from_numpy(audio_float32)
@@ -109,7 +121,6 @@ def get_voice_query(whisper_model, vad_model):
         elif started_speaking:
             silence_counter += 1
                 
-        # Stop conditions
         if started_speaking and silence_counter >= max_silence_chunks:
             status_text.success("🛑 Silence detected! Processing audio...")
             break
@@ -119,66 +130,89 @@ def get_voice_query(whisper_model, vad_model):
             stream.stop_stream()
             stream.close()
             audio.terminate()
-            return ""
+            return "", "en"
 
     stream.stop_stream()
     stream.close()
     audio.terminate()
 
-    # --- SAVE AND TRANSCRIBE DIRECTLY ---
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-        audio_path = f.name
-        
-    with wave.open(audio_path, 'wb') as wf:
-        wf.setnchannels(CHANNELS)
-        wf.setsampwidth(audio.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
-        wf.writeframes(b''.join(frames))
+    # Optimized: Process memory directly without saving temp files
+    audio_data = b''.join(frames)
+    audio_np = np.frombuffer(audio_data, np.int16).astype(np.float32) / 32768.0
 
-    with st.spinner("Transcribing with AI... 🧠"):
+    with st.spinner("Detecting language and translating... 🧠"):
+        # TASK="TRANSLATE": Whisper detects the language and converts it to English!
         segments, info = whisper_model.transcribe(
-            audio_path,
-            language="en",
-            task="transcribe",
+            audio_np,
+            task="translate",
             initial_prompt="Technodysis"
         )
-        voice_query = "".join(segment.text for segment in segments).strip()
-
-        # 2. Define the phonetic mistakes Whisper usually makes
-        mistakes = r'\b(technotises|techmodisese|techno dices|technodises|techno thesis|techno\s*dysis)\b'
         
-        # 3. Force-correct them to "Technodysis" (case-insensitive)
-        voice_query = re.sub(mistakes, 'Technodysis', voice_query, flags=re.IGNORECASE)
+        detected_iso = info.language
+        lang_name = ISO_TO_NAME.get(detected_iso, detected_iso.upper())
+        
+        english_query = "".join(segment.text for segment in segments).strip()
+
+        mistakes = r'\b(technotises|techmodisese|techno dices|technodises|techno thesis|techno\s*dysis)\b'
+        english_query = re.sub(mistakes, 'Technodysis', english_query, flags=re.IGNORECASE)
 
     status_text.empty()
-    st.success("Transcription done ✅")
-    st.write(f"**You said:** {voice_query}")
+    st.success(f"🗣️ Whisper Detected: **{lang_name}**")
+    st.write(f"**Translated to English:** {english_query}")
     
-    os.remove(audio_path) # Clean up the single temp file
-    
-    return voice_query
+    return english_query, detected_iso
 
 # ============================================================
-# 2) PYTTSX3 MODEL (LOCAL TEXT-TO-SPEECH)
+# 2) DYNAMIC TRANSLATION & EDGE-TTS 
 # ============================================================
 
-def display_and_speak(text, is_success=False, is_error=False, is_warning=False):
-    """Displays the text on screen and instantly speaks it using the local OS."""
-    if is_error:
-        st.error(text)
-    elif is_success:
-        st.success(text)
-    elif is_warning:
-        st.warning(text)
-    else:
-        st.info(text)
+def get_dynamic_voice(iso_code):
+    """Searches the cached Edge-TTS voices for one matching the ISO code."""
+    for voice in EDGE_VOICES:
+        # Match the locale prefix (e.g., 'hi-IN' starts with 'hi')
+        if voice['Locale'].lower().startswith(iso_code.lower()):
+            return voice['ShortName']
+    return "en-US-AriaNeural" # Fallback to English
 
-    with st.spinner("Speaking... 🗣️"):
+async def generate_edge_tts(text, voice, output_path):
+    communicate = edge_tts.Communicate(text, voice)
+    await communicate.save(output_path)
+
+def display_and_speak(english_text, target_iso="en", is_success=False, is_error=False, is_warning=False):
+    """Translates English text back to the user's language and speaks it."""
+    
+    lang_name = ISO_TO_NAME.get(target_iso, "English")
+    
+    # Translate text back to detected language using Google Translate
+    if target_iso != "en":
         try:
-            engine = pyttsx3.init()
-            engine.setProperty('rate', 175) 
-            engine.say(text)
-            engine.runAndWait()
+            final_text = GoogleTranslator(source='en', target=target_iso).translate(english_text)
+        except Exception as e:
+            st.error(f"Translation Error: {e}")
+            final_text = english_text
+    else:
+        final_text = english_text
+
+    # Display UI elements
+    if is_error: st.error(final_text)
+    elif is_success: st.success(final_text)
+    elif is_warning: st.warning(final_text)
+    else: st.info(final_text)
+
+    # Dynamic TTS Generation
+    with st.spinner(f"Generating Audio in {lang_name}... 🔊"):
+        try:
+            voice = get_dynamic_voice(target_iso)
+            
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:
+                output_path = tmp_file.name
+
+            asyncio.run(generate_edge_tts(final_text, voice, output_path))
+            
+            with open(output_path, "rb") as f:
+                audio_bytes = f.read()
+            st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+            
         except Exception as e:
             st.error(f"Voice Error: {e}")
 
@@ -234,6 +268,7 @@ def answer_from_context(llm, query, context_chunks):
     You are a company knowledge assistant.
     Answer clearly and completely using ONLY the context below.
     If the answer is not present, say: "Sorry, I don't have that information."
+    Respond strictly in English.
 
     Context:
     {context}
@@ -252,55 +287,39 @@ def answer_from_context(llm, query, context_chunks):
 def build_smart_intent_prompt():
     template = """
     You are an intelligent intent classifier for a company bot.
+    The user query has already been translated to English.
     
     CRITICAL DISTINCTION:
     - If the user asks a QUESTION about a topic, the intent must be "convo".
     - Only select specific intents ("recon", "ocr", "kyc") if the user explicitly wants to PERFORM that action NOW.
 
     The valid intents are:
-    1. recon: User wants to START reconciling files (e.g., "start recon", "compare these files").
-    2. ocr: User wants to UPLOAD or EXTRACT text (e.g., "ocr this image", "extract text").
-    3. kyc: User wants to VERIFY identity (e.g., "verify me", "do kyc", "upload passport").
-    4. convo: Questions ABOUT the company/services (e.g., "Do you offer KYC?", "What is reconciliation?").
-    5. greeting: Simple conversational greetings (e.g., "hi", "hello", "hey", "good morning").
+    1. recon: User wants to START reconciling files
+    2. ocr: User wants to UPLOAD or EXTRACT text
+    3. kyc: User wants to VERIFY identity
+    4. convo: Questions ABOUT the company/services
+    5. greeting: Simple conversational greetings
     6. unknown: Gibberish or random characters.
 
     YOUR TASK:
-    Analyze the user text and return a JSON object.
+    Analyze the user text and return a JSON object containing "type" and "intent".
 
     SCENARIO A: CLEAR INTENT
-    If the user clearly wants one specific thing, return:
-    {{
-        "type": "direct",
-        "intent": "ocr",
-        "confidence": 0.95
-    }}
+    User: "Tell me about Technodysis"
+    {{ "type": "direct", "intent": "convo", "confidence": 0.95 }}
 
     SCENARIO B: TYPO / CORRECTION
-    If the user makes a typo but the intent is obvious (e.g. "perform otr"), return:
-    {{
-        "type": "correction",
-        "suggested_intent": "ocr",
-        "original_term": "otr"
-    }}
+    User: "perform otr"
+    {{ "type": "correction", "suggested_intent": "ocr", "original_term": "otr" }}
 
     SCENARIO C: AMBIGUOUS / VAGUE
-    If the text is vague (e.g. "check this file"), return the top 3 likely intents:
+    User: "check this file"
     {{
         "type": "ambiguous",
         "options": [
-            {{"intent": "ocr", "score": 0.45, "reason": "User mentioned 'document'"}},
-            {{"intent": "recon", "score": 0.35, "reason": "Checking files implies comparison"}},
-            {{"intent": "kyc", "score": 0.20, "reason": "Verification context"}}
+            {{"intent": "ocr", "score": 0.45, "reason": "User mentioned 'file'"}},
+            {{"intent": "recon", "score": 0.35, "reason": "Checking files implies comparison"}}
         ]
-    }}
-
-    SCENARIO D: GIBBERISH / NONSENSE
-    If the input makes NO sense, return:
-    {{
-        "type": "direct",
-        "intent": "unknown",
-        "confidence": 1.0
     }}
 
     Now, analyze this text:
@@ -312,9 +331,7 @@ def build_smart_intent_prompt():
 def analyze_intent_smart(llm, prompt_template, query):
     prompt = prompt_template.format(query=query)
     raw = llm.invoke(prompt).content.strip()
-    
     raw = raw.replace("```json", "").replace("```", "").strip()
-    
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
@@ -329,23 +346,22 @@ def get_query_from_ui(whisper_model, vad_model):
     input_mode = st.radio("Mode:", ["⌨️ Type", "🎙️ Voice"], horizontal=True)
 
     if input_mode == "⌨️ Type":
-        return st.text_input("Ask something").strip()
+        return st.text_input("Ask something (in English)").strip(), "en"
     
-    # Handle the Voice mode with a clean button
     if input_mode == "🎙️ Voice":
         if st.button("🎙️ Start Listening"):
-            return get_voice_query(whisper_model, vad_model).strip()
+            return get_voice_query(whisper_model, vad_model)
     
-    return ""
+    return "", None
 
-def handle_final_intent(intent, llm, query, chunks, embedder, index):
-    """Executes the final chosen intent and speaks the response."""
+def handle_final_intent(intent, llm, query, chunks, embedder, index, target_iso="en"):
+    """Executes the chosen intent and uses Google Translate + TTS for output."""
     if intent == "unknown":
-        display_and_speak("Sorry, I didn't understand what you mean. Can you please repeat?", is_error=True)
+        display_and_speak("Sorry, I didn't understand what you mean. Can you please repeat?", target_iso=target_iso, is_error=True)
         return
 
     if intent == "greeting":
-        display_and_speak("Hello! I am the Technodysis chatbot. How can I help you today?", is_success=True)
+        display_and_speak("Hello! I am the Technodysis chatbot. How can I help you today?", target_iso=target_iso, is_success=True)
         return
 
     st.markdown(f"""
@@ -356,19 +372,21 @@ def handle_final_intent(intent, llm, query, chunks, embedder, index):
 
     if intent == "convo":
         results = rag_search(query, chunks, embedder, index)
-        response = answer_from_context(llm, query, results)
-        display_and_speak(response)
+        # Note: LLM answers in English
+        english_response = answer_from_context(llm, query, results)
+        # Display & Speak automatically translates the English response back to target_iso
+        display_and_speak(english_response, target_iso=target_iso)
         
     elif intent == "recon":
         st.session_state.recon_stage = "confirm"
-        display_and_speak("Do you want to start Reconciliation? Please type or say yes or no.", is_warning=True)
+        display_and_speak("Do you want to start Reconciliation? Please type or say yes or no.", target_iso=target_iso, is_warning=True)
         
     elif intent == "ocr":
-        display_and_speak("OCR Module Active. Please upload your document below.")
+        display_and_speak("OCR Module Active. Please upload your document below.", target_iso=target_iso)
         st.file_uploader("Upload Document", key="ocr_uploader")
         
     elif intent == "kyc":
-        display_and_speak("KYC Module Active. I am ready for identity verification.")
+        display_and_speak("KYC Module Active. I am ready for identity verification.", target_iso=target_iso)
         st.button("Start Verification Process")
 
 # ============================================================
@@ -400,27 +418,27 @@ def main():
     init_app()
     init_session_state()
 
-    # Initialize models
     llm = load_llm()
     whisper_model = load_whisper_model()
     vad_model = load_vad_model()
     chunks, embedder, index = setup_rag()
     intent_prompt = build_smart_intent_prompt()
 
-    # --- 1. Get Input ---
-    query = get_query_from_ui(whisper_model, vad_model)
+    # --- 1. Get English Query & Detected Language ---
+    query, detected_iso = get_query_from_ui(whisper_model, vad_model)
     
     if query and query != st.session_state.final_query:
         st.session_state.final_query = query
+        st.session_state.detected_iso = detected_iso # Save the language
         
-        # Reset specific states
+        # Reset states
         st.session_state.suggested_intent = ""
         st.session_state.top3_options = None
         st.session_state.awaiting_correction_confirmation = False
         st.session_state.awaiting_top3_choice = False
         st.session_state.recon_stage = None
 
-        # --- 2. Analyze Intent ---
+        # --- 2. Analyze Intent (English Only) ---
         result = analyze_intent_smart(llm, intent_prompt, query)
         
         # --- 3. Route Intent ---
@@ -435,7 +453,15 @@ def main():
             st.rerun()
             
         else:
-            handle_final_intent(result["intent"], llm, query, chunks, embedder, index)
+            handle_final_intent(
+                intent=result["intent"], 
+                llm=llm, 
+                query=query, 
+                chunks=chunks, 
+                embedder=embedder, 
+                index=index, 
+                target_iso=st.session_state.detected_iso
+            )
 
     # --- 4. Handle Pending Interactions ---
     if st.session_state.awaiting_correction_confirmation:
@@ -445,11 +471,11 @@ def main():
         if col1.button("✅ Yes"):
             intent = st.session_state.suggested_intent
             st.session_state.awaiting_correction_confirmation = False
-            handle_final_intent(intent, llm, st.session_state.final_query, chunks, embedder, index)
+            handle_final_intent(intent, llm, st.session_state.final_query, chunks, embedder, index, st.session_state.detected_iso)
             
         if col2.button("❌ No"):
             st.session_state.awaiting_correction_confirmation = False
-            handle_final_intent("convo", llm, st.session_state.final_query, chunks, embedder, index)
+            handle_final_intent("convo", llm, st.session_state.final_query, chunks, embedder, index, st.session_state.detected_iso)
 
     if st.session_state.awaiting_top3_choice:
         st.warning("⚠️ I'm not fully sure. Please choose what you meant:")
@@ -460,7 +486,7 @@ def main():
         if st.button("Confirm Selection"):
             selected_intent = choice.split(" ")[0].lower()
             st.session_state.awaiting_top3_choice = False
-            handle_final_intent(selected_intent, llm, st.session_state.final_query, chunks, embedder, index)
+            handle_final_intent(selected_intent, llm, st.session_state.final_query, chunks, embedder, index, st.session_state.detected_iso)
 
     # --- 5. Run flows ---
     run_recon_flow()

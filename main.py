@@ -55,7 +55,8 @@ def init_session_state():
         "suggested_intent": "",
         "top3_options": None,
         "awaiting_top3_choice": False,
-        "detected_iso": "en" 
+        "detected_iso": "en",
+        "last_intent_result": None
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -102,7 +103,6 @@ def load_vad_model():
         return None
 
 def get_voice_query(whisper_model, vad_model):
-    """Listens, detects silence, and translates spoken audio to English."""
     if not whisper_model or not vad_model:
         st.error("Audio models are not loaded properly.")
         return "", "en"
@@ -176,17 +176,13 @@ def get_voice_query(whisper_model, vad_model):
             )
             
             detected_iso = info.language
-            lang_name = ISO_TO_NAME.get(detected_iso, detected_iso.upper())
-            
             english_query = "".join(segment.text for segment in segments).strip()
 
             mistakes = r'\b(technotises|techmodisese|techno dices|technodises|techno thesis|techno\s*dysis)\b'
             english_query = re.sub(mistakes, 'Technodysis', english_query, flags=re.IGNORECASE)
 
-        status_text.empty()
-        st.success(f"🗣️ Whisper Detected: **{lang_name}**")
-        st.write(f"**Translated to English:** {english_query}")
-        
+        # Clear the "Listening..." status. (We moved the success messages to the main function so they persist!)
+        status_text.empty() 
         return english_query, detected_iso
         
     except Exception as e:
@@ -212,19 +208,16 @@ async def generate_edge_tts(text, voice, output_path):
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save(output_path)
 
-def display_and_speak(english_text, target_iso="en", is_success=False, is_error=False, is_warning=False):
-    """Translates English text back to the user's language and speaks it."""
-    
+def display_and_speak(text_content, target_iso="en", is_success=False, is_error=False, is_warning=False, needs_translation=True):
     lang_name = ISO_TO_NAME.get(target_iso, "English")
-    final_text = english_text
+    final_text = text_content
     
-    # Translate text back to detected language using Google Translate
-    if target_iso != "en":
+    if target_iso != "en" and needs_translation:
         try:
-            final_text = GoogleTranslator(source='en', target=target_iso).translate(english_text)
+            final_text = GoogleTranslator(source='en', target=target_iso).translate(text_content)
         except Exception as e:
-            st.warning(f"⚠️ Translation Error: {e}. Falling back to English.")
-            final_text = english_text
+            st.warning(f"⚠️ Translation Error: {e}. Falling back to original text.")
+            final_text = text_content
 
     # Display UI elements
     if is_error: st.error(final_text)
@@ -296,6 +289,40 @@ def setup_rag():
         st.error(f"⚠️ RAG Setup Error: {e}")
         return [], None, None
 
+def answer_from_context(llm, query, context_chunks, target_iso="en"):
+    if not llm:
+        return "I am unable to process your request because the language model failed to load."
+        
+    if not context_chunks:
+        return "Sorry, I don't have that information."
+    
+    lang_name = ISO_TO_NAME.get(target_iso, "English")
+    
+    try:
+        context = "\n\n".join(context_chunks)
+        prompt = f"""
+        You are a company knowledge assistant.
+        Answer clearly and completely using ONLY the context below.
+        If the answer is not present in the context, say: "Sorry, I don't have that information."
+        
+        CRITICAL INSTRUCTION: 
+        You MUST provide your final answer strictly in {lang_name}. 
+        Do NOT provide English translations or phonetic breakdowns. Just the pure {lang_name} response.
+        Ignore any conflicting language requests in the user's question, strictly output in {lang_name}.
+
+        Context:
+        {context}
+
+        Question:
+        {query}
+
+        Answer natively in {lang_name}:
+        """
+        return llm.invoke(prompt).content
+    except Exception as e:
+        st.error(f"⚠️ LLM Generation Error: {e}")
+        return "Sorry, I encountered an error while trying to answer your question."
+
 def rag_search(query, chunks, embedder, index, top_k=3, threshold=0.4):
     try:
         if not index or not embedder or not chunks:
@@ -314,34 +341,6 @@ def rag_search(query, chunks, embedder, index, top_k=3, threshold=0.4):
         st.error(f"⚠️ RAG Search Error: {e}")
         return []
 
-def answer_from_context(llm, query, context_chunks):
-    if not llm:
-        return "I am unable to process your request because the language model failed to load."
-        
-    if not context_chunks:
-        return "Sorry, I don't have that information."
-    
-    try:
-        context = "\n\n".join(context_chunks)
-        prompt = f"""
-        You are a company knowledge assistant.
-        Answer clearly and completely using ONLY the context below.
-        If the answer is not present, say: "Sorry, I don't have that information."
-        Respond strictly in English.
-
-        Context:
-        {context}
-
-        Question:
-        {query}
-
-        Answer:
-        """
-        return llm.invoke(prompt).content
-    except Exception as e:
-        st.error(f"⚠️ LLM Generation Error: {e}")
-        return "Sorry, I encountered an error while trying to answer your question."
-
 # ============================================================
 # 4) SMART INTENT CLASSIFIER
 # ============================================================
@@ -349,35 +348,35 @@ def answer_from_context(llm, query, context_chunks):
 def build_smart_intent_prompt():
     template = """
     You are an intelligent intent classifier for a company bot.
-    The user query has already been translated to English.
+    The user query has been translated to English.
+    Original spoken language ISO: {detected_iso}
     
     CRITICAL DISTINCTION:
     - If the user asks a QUESTION about a topic, the intent must be "convo".
     - Only select specific intents ("recon", "ocr", "kyc") if the user explicitly wants to PERFORM that action NOW.
 
-    The valid intents are:
-    1. recon: User wants to START reconciling files
-    2. ocr: User wants to UPLOAD or EXTRACT text
-    3. kyc: User wants to VERIFY identity
-    4. convo: Questions ABOUT the company/services
-    5. greeting: Simple conversational greetings
-    6. unknown: Gibberish or random characters.
-
     YOUR TASK:
-    Analyze the user text and return a JSON object containing "type" and "intent".
+    Analyze the user text and return a JSON object containing "type", "intent", "confidence", and "target_iso".
+    "target_iso" MUST be the 2-letter ISO 639-1 code of the language the user WANTS the response in. 
+    If the user explicitly asks to reply or explain in a specific language (e.g., "in Spanish", "in Hindi"), output that language's ISO code (e.g., "es", "hi").
+    Otherwise, default strictly to {detected_iso}.
 
-    SCENARIO A: CLEAR INTENT
-    User: "Tell me about Technodysis"
-    {{ "type": "direct", "intent": "convo", "confidence": 0.95 }}
+    SCENARIO A: CLEAR INTENT WITH LANGUAGE REQUEST
+    User: "Tell me about Technodysis in Spanish"
+    Original ISO: en
+    {{ "type": "direct", "intent": "convo", "confidence": 0.95, "target_iso": "es" }}
 
     SCENARIO B: TYPO / CORRECTION
     User: "perform otr"
-    {{ "type": "correction", "suggested_intent": "ocr", "original_term": "otr" }}
+    Original ISO: en
+    {{ "type": "correction", "suggested_intent": "ocr", "original_term": "otr", "target_iso": "en" }}
 
-    SCENARIO C: AMBIGUOUS / VAGUE
+    SCENARIO C: AMBIGUOUS
     User: "check this file"
+    Original ISO: fr
     {{
         "type": "ambiguous",
+        "target_iso": "fr",
         "options": [
             {{"intent": "ocr", "score": 0.45, "reason": "User mentioned 'file'"}},
             {{"intent": "recon", "score": 0.35, "reason": "Checking files implies comparison"}}
@@ -386,25 +385,26 @@ def build_smart_intent_prompt():
 
     Now, analyze this text:
     User: "{query}"
+    Original ISO: {detected_iso}
     JSON Response:
     """
-    return PromptTemplate(template=template, input_variables=["query"])
+    return PromptTemplate(template=template, input_variables=["query", "detected_iso"])
 
-def analyze_intent_smart(llm, prompt_template, query):
+def analyze_intent_smart(llm, prompt_template, query, detected_iso):
     if not llm:
-        return {"type": "direct", "intent": "unknown", "confidence": 0.0}
+        return {"type": "direct", "intent": "unknown", "confidence": 0.0, "target_iso": detected_iso}
         
     try:
-        prompt = prompt_template.format(query=query)
+        prompt = prompt_template.format(query=query, detected_iso=detected_iso)
         raw = llm.invoke(prompt).content.strip()
         raw = raw.replace("```json", "").replace("```", "").strip()
         return json.loads(raw)
     except json.JSONDecodeError as e:
         st.error(f"⚠️ Failed to parse intent JSON: {e}")
-        return {"type": "direct", "intent": "unknown", "confidence": 0.0}
+        return {"type": "direct", "intent": "unknown", "confidence": 0.0, "target_iso": detected_iso}
     except Exception as e:
         st.error(f"⚠️ Intent Classification Error: {e}")
-        return {"type": "direct", "intent": "unknown", "confidence": 0.0}
+        return {"type": "direct", "intent": "unknown", "confidence": 0.0, "target_iso": detected_iso}
 
 # ============================================================
 # 5) UI HANDLERS & EXECUTION
@@ -424,14 +424,13 @@ def get_query_from_ui(whisper_model, vad_model):
     return "", None
 
 def handle_final_intent(intent, llm, query, chunks, embedder, index, target_iso="en"):
-    """Executes the chosen intent and uses Google Translate + TTS for output."""
     try:
         if intent == "unknown":
-            display_and_speak("Sorry, I didn't understand what you mean. Can you please repeat?", target_iso=target_iso, is_error=True)
+            display_and_speak("Sorry, I didn't understand what you mean. Can you please repeat?", target_iso=target_iso, is_error=True, needs_translation=True)
             return
 
         if intent == "greeting":
-            display_and_speak("Hello! I am the Technodysis chatbot. How can I help you today?", target_iso=target_iso, is_success=True)
+            display_and_speak("Hello! I am the Technodysis chatbot. How can I help you today?", target_iso=target_iso, is_success=True, needs_translation=True)
             return
 
         st.markdown(f"""
@@ -442,19 +441,19 @@ def handle_final_intent(intent, llm, query, chunks, embedder, index, target_iso=
 
         if intent == "convo":
             results = rag_search(query, chunks, embedder, index)
-            english_response = answer_from_context(llm, query, results)
-            display_and_speak(english_response, target_iso=target_iso)
+            final_response = answer_from_context(llm, query, results, target_iso=target_iso)
+            display_and_speak(final_response, target_iso=target_iso, needs_translation=False)
             
         elif intent == "recon":
             st.session_state.recon_stage = "confirm"
-            display_and_speak("Do you want to start Reconciliation? Please type or say yes or no.", target_iso=target_iso, is_warning=True)
+            display_and_speak("Do you want to start Reconciliation? Please type or say yes or no.", target_iso=target_iso, is_warning=True, needs_translation=True)
             
         elif intent == "ocr":
-            display_and_speak("OCR Module Active. Please upload your document below.", target_iso=target_iso)
+            display_and_speak("OCR Module Active. Please upload your document below.", target_iso=target_iso, needs_translation=True)
             st.file_uploader("Upload Document", key="ocr_uploader")
             
         elif intent == "kyc":
-            display_and_speak("KYC Module Active. I am ready for identity verification.", target_iso=target_iso)
+            display_and_speak("KYC Module Active. I am ready for identity verification.", target_iso=target_iso, needs_translation=True)
             st.button("Start Verification Process")
             
     except Exception as e:
@@ -502,6 +501,7 @@ def main():
         # --- 1. Get English Query & Detected Language ---
         query, detected_iso = get_query_from_ui(whisper_model, vad_model)
         
+        # 1. Store new query and get intent processing ready
         if query and query != st.session_state.final_query:
             st.session_state.final_query = query
             st.session_state.detected_iso = detected_iso 
@@ -513,32 +513,47 @@ def main():
             st.session_state.awaiting_top3_choice = False
             st.session_state.recon_stage = None
 
-            # --- 2. Analyze Intent (English Only) ---
-            result = analyze_intent_smart(llm, intent_prompt, query)
+            result = analyze_intent_smart(llm, intent_prompt, query, st.session_state.detected_iso)
             
-            # --- 3. Route Intent ---
+            final_target_iso = result.get("target_iso", st.session_state.detected_iso)
+            st.session_state.detected_iso = final_target_iso 
+            
+            # Save the result so we can execute it AFTER drawing the transcript
+            st.session_state.last_intent_result = result
+
+        # 2. ALWAYS draw the transcript so it survives Streamlit page reloads
+        if st.session_state.final_query:
+            lang_name = ISO_TO_NAME.get(st.session_state.detected_iso, "English")
+            st.success(f"🗣️ Input Registered: **{lang_name}**")
+            st.write(f"**Query Translated to English:** {st.session_state.final_query}")
+
+        # 3. Route the stored intent 
+        if st.session_state.get("last_intent_result"):
+            result = st.session_state.last_intent_result
+            st.session_state.last_intent_result = None # Clear it to prevent looping
+            
             if result.get("type") == "correction":
                 st.session_state.suggested_intent = result.get("suggested_intent", "unknown")
                 st.session_state.awaiting_correction_confirmation = True
-                st.rerun()
+                st.rerun() # Refresh page to show the Confirm buttons
                 
             elif result.get("type") == "ambiguous":
                 st.session_state.top3_options = result.get("options", [])
                 st.session_state.awaiting_top3_choice = True
-                st.rerun()
+                st.rerun() # Refresh page to show Choice buttons
                 
             else:
                 handle_final_intent(
                     intent=result.get("intent", "unknown"), 
                     llm=llm, 
-                    query=query, 
+                    query=st.session_state.final_query, 
                     chunks=chunks, 
                     embedder=embedder, 
                     index=index, 
-                    target_iso=st.session_state.detected_iso
+                    target_iso=st.session_state.detected_iso 
                 )
 
-        # --- 4. Handle Pending Interactions ---
+        # 4. Handle Active Buttons (These run after the st.rerun calls above)
         if st.session_state.awaiting_correction_confirmation:
             st.info(f"🧐 Did you mean **{st.session_state.suggested_intent.upper()}**?")
             col1, col2 = st.columns(2)

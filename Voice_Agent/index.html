@@ -10,7 +10,6 @@
 
 <script>
 let mediaRecorder;
-let audioChunks = [];
 let socket = new WebSocket("ws://127.0.0.1:8000/ws");
 
 socket.onmessage = function(event) {
@@ -20,27 +19,22 @@ socket.onmessage = function(event) {
 async function startRecording() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
 
-    mediaRecorder.ondataavailable = event => {
-        audioChunks.push(event.data);
+    mediaRecorder.ondataavailable = async (event) => {
+        if (event.data.size > 0) {
+            const arrayBuffer = await event.data.arrayBuffer();
+            socket.send(arrayBuffer);
+        }
     };
 
-    mediaRecorder.start();
+    // 🔥 Send chunk every 500ms
+    mediaRecorder.start(500);
 }
 
 function stopRecording() {
     mediaRecorder.stop();
-
-    mediaRecorder.onstop = async () => {
-        const blob = new Blob(audioChunks, { type: "audio/wav" });
-        audioChunks = [];
-
-        const arrayBuffer = await blob.arrayBuffer();
-
-        // Send raw bytes via WebSocket
-        socket.send(arrayBuffer);
-    };
+    socket.send("END");  // 🔥 signal backend to process
 }
 </script>
 </body>

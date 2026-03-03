@@ -1,43 +1,59 @@
-# server.py
-
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+import tempfile
 import os
-import uuid
-
-from transcribe import transcribe_file
+import time
+from faster_whisper import WhisperModel
 
 app = FastAPI()
 
-UPLOAD_DIR = "recordings"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+model = WhisperModel("base", device="cpu", compute_type="int8")
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
+    print("\n===== Streaming Session Started =====")
 
-    while True:
-        try:
-            # Receive audio bytes
-            audio_bytes = await websocket.receive_bytes()
+    audio_buffer = b""
 
-            # Create unique file name
-            file_name = f"{uuid.uuid4()}.wav"
-            file_path = os.path.join(UPLOAD_DIR, file_name)
+    try:
+        while True:
+            message = await websocket.receive()
 
-            # Save audio file
-            with open(file_path, "wb") as f:
-                f.write(audio_bytes)
+            # 🔹 If client disconnected
+            if message["type"] == "websocket.disconnect":
+                print("Client disconnected cleanly.")
+                break
 
-            print(f"Saved file: {file_path}")
+            # 🔹 If audio chunk
+            if "bytes" in message and message["bytes"] is not None:
+                audio_buffer += message["bytes"]
 
-            # Run STT
-            transcript = transcribe_file(file_path)
+            # 🔹 If END signal
+            elif "text" in message and message["text"] == "END":
+                print("[INFO] Recording ended. Running STT...")
 
-            print("Transcript:", transcript)
+                start_stt = time.time()
 
-            # Send transcript back
-            await websocket.send_text(transcript)
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
+                    tmp.write(audio_buffer)
+                    tmp_path = tmp.name
 
-        except Exception as e:
-            print("Error:", e)
-            break
+                segments, info = model.transcribe(tmp_path, task="translate")
+                transcript = "".join([seg.text for seg in segments]).strip()
+
+                end_stt = time.time()
+                print(f"[STT] Time: {end_stt - start_stt:.3f} sec")
+
+                await websocket.send_text(transcript)
+
+                os.remove(tmp_path)
+                audio_buffer = b""
+
+    except WebSocketDisconnect:
+        print("WebSocket disconnected gracefully.")
+
+    except Exception as e:
+        print("Unexpected error:", e)
+
+    finally:
+        print("===== Session Closed =====")

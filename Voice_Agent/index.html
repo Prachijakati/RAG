@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket STT</title>
+</head>
+<body>
+    <button onclick="startRecording()">Start</button>
+    <button onclick="stopRecording()">Stop</button>
+    <p id="output"></p>
+
+<script>
+let mediaRecorder;
+let audioChunks = [];
+let socket = new WebSocket("ws://127.0.0.1:8000/ws");
+
+socket.onmessage = function(event) {
+    document.getElementById("output").innerText = event.data;
+};
+
+async function startRecording() {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+    };
+
+    mediaRecorder.start();
+}
+
+function stopRecording() {
+    mediaRecorder.stop();
+
+    mediaRecorder.onstop = async () => {
+        const blob = new Blob(audioChunks, { type: "audio/wav" });
+        audioChunks = [];
+
+        const arrayBuffer = await blob.arrayBuffer();
+
+        // Send raw bytes via WebSocket
+        socket.send(arrayBuffer);
+    };
+}
+</script>
+</body>
+</html>
